@@ -3,13 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
 打开控制台查看运行结果
 <div id="s1">s1
     <div id="s2">s2</div>
 </div>
+<button id="test">
+    test
+</button>
+<button id="btn">btn</button>
+<button onclick="aaa(event)">html元素事件</button>
 <script type="text/javascript" src="closure.js"></script>
 <script type="text/javascript" src="js-event.js"></script>
+<script>
+    function aaa(e) {
+        alert(e);
+        alert('aaa')
+    }
+</script>
 </body>
 </html>
