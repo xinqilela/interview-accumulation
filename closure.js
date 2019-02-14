@@ -81,3 +81,8 @@ var object = {
 };
 
 console.log(object.getNameFunc()()); //My Object
+
+/*
+* 函数防抖
+* 函数节流
+* */
