@@ -24,7 +24,7 @@ var ProxySingletonCreateDiv = (function(){
 })();
 var a = new ProxySingletonCreateDiv( 'sven1' );
 var b = new ProxySingletonCreateDiv( 'sven2' );
-alert( a === b );  //true
+// alert( a === b );  //true
 
 //惰性单例
 var getSingle = function( fn ){

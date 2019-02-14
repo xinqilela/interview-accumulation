@@ -2,6 +2,7 @@
 执行上下文:
 this：this要在执行时才能确认值，定义时无法确认.
       场景:作为构造函数执行;作为对象属性执行;作为普通函数执行；call\apply\bind;
+      this 的指向: 【this永远指向最后调用它的那个对象】
 作用域:
 作用域链:
 * */
@@ -82,7 +83,97 @@ var object = {
 
 console.log(object.getNameFunc()()); //My Object
 
+
 /*
-* 函数防抖
-* 函数节流
+* 背景:
+*    当需要绑定一些持续触发的事件时，如 resize、scroll、mousemove 等，但我们并不希望在事件持续触发的过程中那么频繁地去执行函数。
+* 解决：
+*    1.函数防抖:触发事件后在 n 秒内函数只能执行一次，如果在 n 秒内又触发了事件，则会重新计算函数执行时间。
+*    2.函数节流:连续触发事件但是在 n 秒中只执行一次函数。
 * */
+
+/*
+函数防抖:
+    非立即执行:触发事件后函数不会立即执行，而是在 n 秒后执行，如果在 n 秒内又触发了事件，则会重新计算函数执行时间。
+    立即执行:触发事件后函数会立即执行，然后 n 秒内不触发事件才能继续执行函数的效果。
+*/
+let content = document.getElementById('content');
+
+function debounce(func, awit, immediate) {
+    let timeout;
+    return function () {
+        let context = this;
+        let args = arguments;
+        if (timeout) {
+            clearTimeout(timeout);
+        }
+        if (immediate) {
+            let callNow = !timeout;
+            timeout = setTimeout(function () {
+                timeout = null;
+            }, awit);
+            if (callNow) func.apply(context, args);
+        } else {
+            timeout = setTimeout(function () {
+                func.apply(context, args);
+            }, awit);
+        }
+    }
+}
+
+let num = 0;
+
+function count() {
+    num++;
+    content.innerHTML = num;
+}
+
+// content.onmousemove = debounce(count, 1000, true);
+
+/*
+函数节流
+*/
+function throttle(func, wait, type) {
+    if (type == 1) {
+        let previous = 0;
+    } else if (type == 2) {
+        let timeout;
+    }
+    return function () {
+        let context = this;
+        let args = arguments;
+        if (type == 1) {
+            let now = new Date();
+            if (now - previous > wait) {
+                func.apply(context, args);
+            }
+        } else if (type == 2) {
+            if (!timeout) {
+                timeout = setTimeout(() => {
+                    timeout = null;
+                    func.apply(context, args);
+                }, wait);
+            }
+        }
+    }
+}
+
+content.onmousemove = debounce(count, 1000, 2);
+
+/*
+* apply、call、bind 区别
+      apply 和 call 基本类似,apply 和 call 的区别是 call 方法接受的是若干个参数列表，而 apply 接收的是一个包含多个参数的数组。
+      bind 是创建一个新的函数，我们必须要手动去调用。
+* */
+
+var a = {
+    name: "Cherry",
+    fn: function (a, b) {
+        console.log(a + b)
+    }
+}
+
+var b = a.fn;
+b.apply(a, [1, 2]);    // 3
+b.call(a, 1, 2);
+b.bind(a, 1, 2)();           // 3
