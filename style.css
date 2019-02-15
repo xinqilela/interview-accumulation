@@ -1,3 +1,43 @@
 /*
-选择器的优先级
+https://juejin.im/entry/58b7ad418ac24766f5609206
+*/
+
+/*
+margin第一个参数设为auto并不能垂直居中
+*/
+.red {
+    width: 30px;
+    height: 30px;
+    background: red;
+    margin: 0px auto;
+}
+
+#content {
+    position: relative;
+    left: 50%;
+    float: left;
+}
+
+.float-div {
+    position: relative;
+    float: left;
+    right: 0%;
+}
+
+/*
+Formatting context:
+ 是 W3C CSS2.1 规范中的一个概念。它是页面中的一块渲染区域，并且有一套渲染规则，它决定了其子元素将如何定位，以及和其他元素的关系和相互作用。
+ 最常见的 Formatting context 有 Block fomatting context (简称BFC)和 Inline formatting context (简称IFC)。
+ BFC: "块级格式化上下文"。
+     它是一个独立的渲染区域，只有Block-level box参与， 它规定了内部的Block-level Box如何布局，并且与这个区域外部毫不相干。
+     如何生成：满足一下之一即可
+         根元素
+         float的值不为none
+         overflow的值不为visible
+         display的值为inline-block、table-cell、table-caption
+         position的值为absolute或fixed
+     应用：
+       防止margin重叠　　　
+       清除内部浮动
+       自适应多兰布局
 */
