@@ -49,6 +49,24 @@ WebSocket：
 * */
 
 /*
+* iframe:通过iframe设置document.domain可以实现跨域
+* */
+
+<!-- foo.com/a.html -->
+/*
+<iframe id="ifr" src="http://img.foo.com/b.html"></iframe>
+<script>
+document.domain = 'foo.com';
+function aa(str) {
+    console.log(str);
+}
+window.onload = function () {
+        document.querySelector('#ifr').contentWindow.bb('aaa');
+}
+</script>
+*/
+
+/*
 比较：
 CORS与JSONP的使用目的相同，但是比JSONP更强大。
 JSONP只支持GET请求，CORS支持所有类型的HTTP请求。JSONP的优势在于支持老式浏览器，以及可以向不支持CORS的网站请求数据。
