@@ -194,3 +194,4 @@ var b = a.fn;
 b.apply(a, [1, 2]);    // 3
 b.call(a, 1, 2);
 b.bind(a, 1, 2)();           // 3
+

@@ -41,3 +41,61 @@ Formatting context:
        清除内部浮动
        自适应多兰布局
 */
+
+/*
+flex布局：
+http://www.ruanyifeng.com/blog/2015/07/flex-grammar.html
+http://www.ruanyifeng.com/blog/2015/07/flex-examples.html
+*/
+
+/*
+grid布局：
+  是CSS中最强大的布局系统。 这是一个二维系统，这意味着它可以同时处理列和行，不像 flexbox 那样主要是一维系统。
+你可以通过将CSS规则应用于父元素和该元素的子元素，来使用网格布局。
+https://segmentfault.com/a/1190000012889793
+  1.“fr”单位允许您将轨道大小设置为网格容器自由空间的一部分。自由空间是在排除所有不可伸缩的 grid item 之后计算得到的。
+  父元素：
+    justify-items沿着行轴对齐网格内的内容（与之对应的是 align-items, 即沿着列轴对齐）。
+    justify-content设置网格容器内的网格的对齐方式。 此属性沿着行轴对齐网格（与之对应的是 align-content, 沿着列轴对齐）。
+    grid-auto-columns / grid-auto-rows指定自动生成的网格轨道（又名隐式网格轨道）的大小。
+    grid-auto-flow如果你存在没有显示指明放置在网格上的 grid item，则自动放置算法会自动放置这些项目。
+  子元素：
+    justify-self沿着行轴对齐grid item 里的内容（与之对应的是 align-self, 即沿列轴对齐）
+  而该属性则用于控制自动布局算法的工作方式。
+*/
+.grid-wrapper {
+    width: 100%;
+    height: 300px;
+    display: grid;
+    grid-template-columns: 100px 100px 100px 100px;
+    grid-template-rows: auto;
+    grid-template-areas:
+            "header header header header"
+            "main main . sidebar"
+            "footer footer footer footer";
+    justify-items: center;
+    align-items:end;
+    justify-content: end;
+}
+.item{
+    width: 50px;
+    height: 50px;
+    background: pink;
+}
+
+.item-a {
+    grid-area: header;
+    background: red;
+}
+.item-b {
+    grid-area: main;
+    background: yellow;
+}
+.item-c {
+    grid-area: sidebar;
+    background: gray;
+}
+.item-d {
+    grid-area: footer;
+    background: green;
+}
