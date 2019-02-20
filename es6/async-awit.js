@@ -1,3 +1,4 @@
+var fetch = require("fetch").fetchUrl;
 /**
  * Created by Administrator on 2019/2/18 0018.
  */
@@ -88,8 +89,40 @@ async function aaa() {
     const a = await Promise.resolve('hello');
     console.log(a);
 }
-aaa();
+// aaa();
 
 //错误处理
 
 
+// 读取文件的传统写法与异步遍历器写法的差异
+function main1(inputFilePath) {
+    const readStream = fs.createReadStream(
+        inputFilePath,{encoding:'utf-8',highWaterMark:1024}
+    );
+    readStream.on('data',(chunk)=>{
+        console.log('>>>',chunk);
+    });
+    readStream.on('end',()=>{
+        console.log('### done ###');
+    });
+}
+// node10支持异步遍历接口
+async function main2(inputFilePath) {
+    const readStream = fs.createReadStream(
+        inputFilePath,{encoding:'utf-8',highWaterMark:1024}
+    );
+    for await(const chunk of readStream){
+        console.log('>>>',chunk);
+    }
+    console.log('### done ###');
+}
+
+// main1('aa.txt');
+// main2('aa.txt');
+
+// 异步generator函数：返回一个异步遍历器
+async function* gen() {
+    yield 'hello';
+}
+const genObj = gen();
+// genObj.next().then(x => console.log(x));
