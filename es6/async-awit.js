@@ -91,8 +91,92 @@ async function aaa() {
 }
 // aaa();
 
-//错误处理
+//错误处理:如果await后面的异步操作出错，那么等同于async函数返回的 Promise 对象被reject。
 
+async function bbb() {
+    try {
+        await new Promise(function (resolve, reject) {
+            throw new Error('出错了');
+        });
+    } catch(e) {
+    }
+    return await('hello world');
+}
+
+// bbb().then(console.log).catch(console.log);
+
+//继发请求
+async function dbFunc(db){
+    let docs = [{}, {}, {}];
+    for(let doc of docs){
+        await db.post(doc);
+    }
+}
+//并发请求
+async function dbFuc(db) {
+    let docs = [{}, {}, {}];
+    let promises = docs.map((doc) => db.post(doc));
+    let results = await Promise.all(promises);
+    console.log(results);
+}
+
+//esm模块加载器支持顶层await，即await命令可以不放在 async 函数里面，直接使用
+// const res = await fetch('google.com');
+// console.log(await res.text());
+
+
+//async原理:将 Generator 函数和自动执行器，包装在一个函数里。
+async function fn(args) {
+}
+// 等同于
+function fn(args) {
+    return spawn(function* () {
+    });
+}
+function spawn(genF) {
+    return new Promise(function(resolve, reject) {
+        const gen = genF();
+        function step(nextF) {
+            let next;
+            try {
+                next = nextF();
+            } catch(e) {
+                return reject(e);
+            }
+            if(next.done) {
+                return resolve(next.value);
+            }
+            Promise.resolve(next.value).then(function(v) {
+                step(function() { return gen.next(v); });
+            }, function(e) {
+                step(function() { return gen.throw(e); });
+            });
+        }
+        step(function() { return gen.next(undefined); });
+    });
+}
+
+
+// 依次远程读取一组 URL，然后按照读取的顺序输出结果。
+// 继发
+async function logInOrder(urls) {
+    for (const url of urls) {
+        const response = await fetch(url);
+        console.log(await response.text());
+    }
+}
+//并发
+async function logInOrder(urls) {
+    // 并发读取远程URL
+    const textPromises = urls.map(async url => {
+        const response = await fetch(url);
+        return response.text();
+    });
+    // 按次序输出
+    for (const textPromise of textPromises) {
+        console.log(await textPromise);
+    }
+}
 
 // 读取文件的传统写法与异步遍历器写法的差异
 function main1(inputFilePath) {
