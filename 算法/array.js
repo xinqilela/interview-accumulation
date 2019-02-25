@@ -1,20 +1,13 @@
-/**
- * Created by Administrator on 2019/2/18 0018.
- */
-function searchTarget(array, target) {
-    var rows = array.length;
-    var cols = array[0].length;
-    var i = rows - 1;
-    var j = 0;
-    while (i >= 0 && j < cols) {
-        if (target == array[i][j]) {
-            return true;
-        } else if (target < array[i][j]) {
-            i--;
-        } else {
-            j++;
-        }
-    }
-    return false;
-}
-// console.log(searchTarget([[2, 4, 6], [4, 6, 8], [6, 8, 10]], 0));
+/*
+ 1.二维数组中的查找                         √
+ 2.旋转数组的最小数字                       √
+ 3.调整数组顺序使奇数位于偶数前面           √
+ 4.数组中出现次数超过一半的数字             √
+ 5.连续子数组的最大和                       √
+ 6.把数组排成最小的数                       √
+ 7.数组中的逆序对                           ???
+ 8.数字在排序数组中出现的次数               √
+ 9.数组中只出现一次的数字                   √
+ 10.数组中重复的数字                        √
+ 11.构建乘积数组                            √
+* */
