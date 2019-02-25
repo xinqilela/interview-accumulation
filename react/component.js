@@ -1,5 +1,7 @@
 /*
 *1.对组件化的理解：
+*     封装：一个组件所需的数据封装于组件内部；
+*     组合：一个组件可以与其他组件通过组合的方式实现更加复杂的业务逻辑；
 *     组件化是为了代码的复用和分治。可以将UI切分成一些独立的、可复用的组件，这样你就只需专注于构建每一个单独的组件。
 *   当你的UI中有一部分重复使用了好几次，或者其自身就足够复杂，类似这些都是抽象成一个可复用组件的绝佳选择。
 * 2.jsx是什么：
@@ -47,54 +49,74 @@
 *        如果 ref 回调以内联函数的方式定义，在更新期间它会被调用两次，第一次参数是 null ，之后参数是 DOM 元素。这是因为
 *        在每次渲染中都会创建一个新的函数实例。因此，React 需要清理旧的 ref 并且设置新的。通过将 ref 的回调函数定义成
 *        类的绑定函数的方式可以避免上述问题。
-*    10.react生命周期钩子：
+*    10.react生命周期钩子：见下文
 * */
 
 /*
 * react和vue对比：
 *   https://cn.vuejs.org/v2/guide/comparison.html
-*   共同点：3
+*   共同点：
+*       (1).使用 Virtual DOM
+*       (2).提供了响应式 (Reactive) 和组件化 (Composable) 的视图组件
+*       (3).将注意力集中保持在核心库，而将其他功能如路由和全局状态管理交给相关的库
 *   不同之处：
+*       (1)在 React 应用中，当某个组件的状态发生变化时，它会以该组件为根，重新渲染整个组件子树，若要避免不必要的
+*          子组件的重渲染，要在所有可能的地方使用 PureComponent，或是手动实现shouldComponentUpdate方法，同时可能
+*          会需要使用不可变的数据结构来使得你的组件更容易被优化；
+           在 Vue 应用中，组件的依赖是在渲染过程中自动追踪的，所以系统能精确知晓哪个组件确实需要被重渲染。
+        (2)在不使用Redux,vuex这样的状态管理容器的情况下，在React中你需要使用setState()方法去更新状态，在Vue中数据
+            由data属性在Vue对象中进行管理。
+        (3)React推荐使用jsx，vue推荐使用模板语法。
 * */
 
 /*
 * 问题：
 * https://juejin.im/post/5bca74cfe51d450e9163351b#heading-1
 * 1.react的特点？
+*   https://juejin.im/post/5b4aeac25188251ac9767634
+*   虚拟DOM、组件化、声明式代码、单向数据流、JSX语法
 * 2.什么是 JSX ？我们怎样在 JavaScript 代码中书写它？浏览器是如何识别它的？
 *     JSX是一种 JavaScript 的语法扩展。
 *     let jsx = <h1>hello</h1>;
 *     JSX在浏览器中会被编译为React.createElement()调用。
 * 3.为什么甚至在我们的代码并没有使用 React 的情况下，也需要在文件顶部 import React from 'react'?
 *     只要使用了jsx语法，我们就需要引入react，因为jsx会被babel编译为React.createElement();
-* 4.为什么组件不能直接返回多个元素?
-* 5.为什么 JSX 中的组件名要以大写字母开头？
+* 4.为什么 JSX 中的组件名要以大写字母开头？
 *     当元素类型以小写字母开头时，它表示一个内置的组件，如 <div> 或 <span>，将导致字符串 'div' 或 'span' 传递给
 *   React.createElement。以大写字母开头的类型，如 <Foo /> 编译为 React.createElement(Foo)，并且它正对应于
 *   你在 JavaScript 文件中定义或导入的组件。
-* 6.在 React 中你可以声明的两种主要组件类型是什么以及使用时怎样在两者间选择？
+* 5.在 React 中你可以声明的两种主要组件类型是什么以及使用时怎样在两者间选择？
 *     函数定义组件/类定义组件。
 *     在函数组件中只能访问props,没有自己的内部状态。
 *     类组件中可以使用生命周期函数，可以定义组件自己的内部状态。
-* 7.讲一遍挂载状态组件的生命周期吗？哪些函数按何种顺序被调用？
-* 8.你会把向 API 的数据请求放在哪里执行？为什么？
+* 6.讲一遍挂载状态组件的生命周期吗？哪些函数按何种顺序被调用？
+*   https://juejin.im/entry/587de1b32f301e0057a28897
+*   (1).在组件初始化阶段：componentWillMount -> render -> componentDidMount
+*   (2).在组件更新阶段：
+*      props改变：componentWillReceiveProps -> shouldComponentUpdate -> componentWillUpdate -> componentDidUpdate
+*      state改变：shouldComponentUpdate -> componentWillUpdate -> componentDidUpdate
+*   (3).组件卸载阶段：componentWillUnmount
+* 7.你会把向 API 的数据请求放在哪里执行？为什么？
 *   (1).componentDidMount
 *   (2).componentDidMount方法中的代码，是在组件已经完全挂载到网页上才会调用被执行，所以可以保证数据的加载。
-*       此外，在这方法中调用setState方法，会触发重渲染。不建议在constructor和componentWillMount里写的原因是：
-        会阻碍组件的实例化，阻碍组件的渲染；如果用setState，在componentWillMount里面触发setState不会重新渲染。
+*       此外，在这方法中调用setState方法，会触发重渲染。不建议在constructor里写的原因是：会阻碍组件的实例化，
+*       阻碍组件的渲染；不建议在componentWillMount里写得原因是：如果用setState，在componentWillMount里面触发
+*       setState不会重新渲染，React 下一代调和算法 Fiber 会通过开始或停止渲染的方式优化应用性能，其会影响到
+*       componentWillMount 的触发次数。对于 componentWillMount 这个生命周期函数的调用次数会变得不确定，React
+ *      可能会多次频繁调用 componentWillMount。
 *   注意：Redux作初始数据载入时，是可以不需透过React组件的生命周期方法。可以这样作的原因：Redux的store中的状态
 *   有一个最初始的值(reducer上传参里的默认值)，组件先初始化完成，接着发出异步请求，在作完外部数据加载后，发送
 *   动作出来，此时reducer更改store里的状态，react-redux绑定器会触发React组件的重渲染，所以组件上数据会自动更新。
-* 9.如何保证在组件重新挂载之后不会重新获取数据？
-* 10.解释下“状态提升”理念吗？
+* 8.如何保证在组件重新挂载之后不会重新获取数据？
+*       前端缓存。
+* 9.解释下“状态提升”理念吗？
 *      React中，状态分享是通过将state数据提升至离需要这些数据的组件最近的父组件来完成的。这就是所谓的状态提升。
-*  在React应用中，对应任何可变数据理应只有一个单一“数据源”。通常，状态都是首先添加在需要渲染数据的组件中。
-*  然后，如果另一个组件也需要这些数据，你可以将数据提升至离它们最近的共同祖先中。你应该依赖自上而下的数据流，
-*  而不是尝试在不同组件中同步状态。
-* 11.如果不能在组件间传递数据，你怎样给多级组件传递数据？
+*  当某个状态被多个组件依赖或者影响的时候，就把该状态提升到这些组件的最近公共父组件中去管理，用 props 传递数据
+*  或者函数来管理这种依赖或着影响的行为。
+* 10.如果不能在组件间传递数据，你怎样给多级组件传递数据？
 *   (1).Context: 通过组件树提供了一个传递数据的方法，从而避免了在每一个层级手动的传递 props 属性。
 *       Context 设计目的是为了共享那些被认为对于一个组件树而言是“全局”的数据。
-*   (2).Redux
+*   (2).Redux进行状态管理。
 * */
 
 const ThemeContext = React.createContext('light');

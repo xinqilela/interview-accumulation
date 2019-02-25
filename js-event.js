@@ -110,3 +110,14 @@ btn.onclick = function () {
 btn.onclick = function () {
     alert(2);
 };
+
+/*
+*1.load：
+*  load 应该仅用于检测一个完全加载的页面 当一个资源及其依赖资源已完成加载时，将触发load事件。
+*  页面的html、css、js、图片等资源都已经加载完之后才会触发 load 事件。
+*  当页面 DOM 结构中的 js、css、图片，以及 js 异步加载的 js、css 、图片都加载完成之后，才会触发 load 事件。
+*2.DOMContentLoaded：
+*  当初始的 HTML 文档被完全加载和解析完成之后，DOMContentLoaded 事件被触发，而无需等待样式表、图像和子框架的完成加载。
+*  意思是HTML下载、解析完毕之后就触发。
+*  DOMContentLoaded 事件在 html文档加载完毕，并且 html 所引用的内联 js、以及外链 js 的同步代码都执行完毕后触发。
+* */
