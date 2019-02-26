@@ -72,14 +72,14 @@ function insertSort(a) {
         }
         var tmp = a[i];
         arr[i] = arr[i - 1];
-        for (var j = i - 1; j > 0 && arr[j - 1] > tmp; j--) {
+        for (var j = i - 1; j > 0 && arr[j-1] > tmp; j--) {
             arr[j] = arr[j - 1];
         }
         arr[j] = tmp;
     }
     return a;
 }
-// console.log(insertSort(arr));
+console.log(insertSort(arr));
 
 //希尔排序
 function shellSort(arr, increaments) {
@@ -133,7 +133,7 @@ function mergeSort(arr, left, right) {
     return arr;
 }
 
-console.log(mergeSort(arr, 0, arr.length - 1));
+// console.log(mergeSort(arr, 0, arr.length - 1));
 
 //将待排数组调整为大顶堆（a(i)>a(2i)&&a(i)>a(2i+1)）
 function heapAdjust(arr, i, n) {
@@ -296,7 +296,7 @@ BST.prototype.insert = function (data) {
 };
 BST.prototype.preOrder = function (node) {
     if (node != null) {
-        console.log(node.show());
+        // console.log(node.show());
         this.preOrder(node.left);
         this.preOrder(node.right);
     }
@@ -304,7 +304,7 @@ BST.prototype.preOrder = function (node) {
 BST.prototype.inOrder = function (node) {
     if (node != null) {
         this.inOrder(node.left);
-        console.log(node.show());
+        // console.log(node.show());
         this.inOrder(node.right);
     }
 };
@@ -312,7 +312,7 @@ BST.prototype.postOrder = function (node) {
     if (node != null) {
         this.postOrder(node.left);
         this.postOrder(node.right);
-        console.log(node.show());
+        // console.log(node.show());
     }
 };
 //非递归遍历借助栈
@@ -321,7 +321,7 @@ BST.prototype.unRecurPreOrder = function (node) {
     var p = node;
     while (p != null || stack.length > 0) {
         while (p != null) {
-            console.log(p.data);
+            // console.log(p.data);
             stack.push(p);
             p = p.left;
         }
@@ -341,7 +341,7 @@ BST.prototype.unRecurInOrder = function (node) {
         }
         if (stack.length > 0) {
             p = stack.pop();
-            console.log(p.data);
+            // console.log(p.data);
             p = p.right;
         }
     }
@@ -357,7 +357,7 @@ BST.prototype.unRecurPostOrder = function (node) {
             (cur.left == null && cur.right == null) ||
             (pre != null && (pre == cur.left || pre == cur.right))
         ) {
-            console.log(cur.data);  //如果当前结点没有孩子结点或者孩子节点都已被访问过
+            // console.log(cur.data);  //如果当前结点没有孩子结点或者孩子节点都已被访问过
             stack.pop();
             pre = cur;
         }
@@ -447,9 +447,9 @@ tree.insert(92);
 // console.log('--');
 // tree.unRecurInOrder(tree.root);
 // console.log('-------------');
-tree.postOrder(tree.root);
-console.log('--');
-tree.unRecurPostOrder(tree.root);
+// tree.postOrder(tree.root);
+// console.log('--');
+// tree.unRecurPostOrder(tree.root);
 // console.log(tree.isExist(100));
 // tree.invertTree(tree.root);
 // tree.preOrder(tree.root);
