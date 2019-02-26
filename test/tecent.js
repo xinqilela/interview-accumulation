@@ -46,14 +46,14 @@ let p2 = new Person('Tom');
 
 for(var i = 0; i < 10; i++) {
     setTimeout(() => {
-        console.log(i)
+        // console.log(i)
     }, 0)
 }
 
 for(var i = 0; i < 10; i++) {
     (function(i){
         setTimeout(() => {
-            console.log(i)
+            // console.log(i)
         }, 0)
     })(i);
 }
@@ -99,16 +99,41 @@ for(var i = 0; i < 10; i++) {
 * 1.强缓存 & 协商缓存
 *   区别：在使用本地缓存时，是否需要向服务器验证本地缓存是否依旧有效
 *   -强缓存：在使用本地缓存时，不需要向服务器验证本地缓存是否依旧有效
-*            (1)强缓存主要是通过http请求头中的Cache-Control和Expire两个字段控制。
+*            (1)强缓存主要是通过http响应头中的Cache-Control和Expire两个字段控制。
 *            (2)Expires是一个绝对时间，即服务器时间。浏览器检查当前时间，如果还没到失效时间就直接使用缓存文件。
 *               但是该方法存在一个问题：服务器时间与客户端时间可能不一致。因此该字段已经很少使用。
 *            (3)cache-control中的max-age保存一个相对时间。例如Cache-Control: max-age = 484200，表示浏览器收到文件
 *               后，缓存在484200s内均有效。如果同时存在cache-control和Expires，浏览器总是优先使用cache-control。
 *   -协商缓存：在使用本地缓存时，需要向服务器验证本地缓存是否依旧有效，最终确定是否使用本地缓存。
+*              协商缓存需要客户端和服务端共同实现。
 *             (1)协商缓存通过HTTP请求头中的的last-modified，Etag字段进行判断
 *             (2)last-modified是第一次请求资源时，服务器返回的字段，表示最后一次更新的时间。下一次浏览器请求资源时
 *                就发送if-modified-since字段。服务器用本地Last-modified时间与if-modified-since时间比较，如果不一致
 *                则认为缓存已过期并返回新资源给浏览器；如果时间一致则发送304状态码，让浏览器继续使用缓存。
-*             (3)资源的实体标识（哈希字符串），当资源内容更新时，Etag会改变。服务器会判断Etag是否发生变化，如果变化
-*                则返回新资源，否则返回304。
+*             (3)Etag资源的实体标识（哈希字符串），当资源内容更新时，Etag会改变。下一次浏览器请求资源会发送If-None-Match
+ *               字段给服务器，询问该资源 ETag 是否变动，有变动的话就将新的资源发送回来。并且 ETag 优先级比 LastModified 高
+* */
+
+function tecent() {
+
+}
+// tecent.a=1;
+// tecent.b='q';
+// console.log(tecent.prototype.a,',',tecent.prototype.a);
+
+var a = 0;
+var b = async () => {
+    a = a + await 10
+    console.log('2', a) // -> '2' 10
+    a = (await 10) + a
+    console.log('3', a) // -> '3' 20
+}
+b()
+a++
+console.log('1', a) // -> '1' 1
+
+/*
+1 1
+2 10
+3 20
 * */

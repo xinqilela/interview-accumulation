@@ -52,7 +52,7 @@ https://juejin.im/post/59d489156fb9a00a571d6509
   2.解析 CSS 并构建 CSSOM 树。
   3.将 DOM 与 CSSOM 合并成一个渲染树。
   4.根据渲染树来布局，以计算每个节点的几何信息。
-  5.将各个节点绘制到屏幕上。
+  5.调用 GPU 绘制，合成图层，显示在屏幕上。
 * */
 
 /*
@@ -96,11 +96,14 @@ https://juejin.im/post/59d489156fb9a00a571d6509
 * 1.页面内容：
 *   减少http请求  eg:使用css sprite，将背景图片合并成一个文件，通过background-image 和 background-position 控制显示。
 *   减少DNS查询   eg:把资源分布到 2 个域名上（最多不超过 4 个）。这是减少 DNS 查询同时保证并行下载的折衷方案。
+*   DNS预解析     eg:<link rel="dns-prefetch" href="//yuchengkai.cn">
+*   预渲染           <link rel="prerender" href="http://example.com">
 *   避免重定向    eg:URL 末尾应该添加/但未添加。比如，访问 http://astrology.yahoo.com/astrology 将被 301 重定向到 http://astrology.yahoo.com/astrology/。
 *   缓存 Ajax 请求
-*   延迟加载      eg:将首屏以外的 HTML 放在不渲染的元素中，如隐藏的 <textarea>，或者 type 属性为非执行脚本的 <script> 标签中，
+*   懒加载      eg:将首屏以外的 HTML 放在不渲染的元素中，如隐藏的 <textarea>，或者 type 属性为非执行脚本的 <script> 标签中，
 *                    减少初始渲染的 DOM 元素数量，提高速度。等首屏加载完成或者用户操作时，再去渲染剩余的页面内容。
-*   预先加载
+*   懒执行      eg:将某些逻辑延迟到使用时再计算
+*   预先加载         <link rel="preload" href="http://example.com">
 *       无条件预先加载：页面加载完成（load）后，马上获取其他资源。以 google.com 为例，首页加载完成后会立即下载一个
 *                       Sprite 图片，此图首页不需要，但是搜索结果页要用到。
 *       有条件预先加载：根据用户行为预判用户去向，预载相关资源。比如 search.yahoo.com 开始输入时会有额外的资源加载。
@@ -128,6 +131,24 @@ https://zh.wikipedia.org/wiki/WebSocket
   （4）可以发送文本，也可以发送二进制数据。
   （5）没有同源限制，客户端可以与任意服务器通信。
   （6）协议标识符是ws（如果加密，则为wss），服务器网址就是 URL。
+* */
+
+/*
+* 安全问题：
+* XSS攻击（跨站脚本）：
+*   是一种网站应用程式的安全漏洞攻击，是代码注入的一种。它允许恶意使用者将程式码注入到网页上，其他用户在观看网页时就会受到影响
+*   防御：转义输入输出内容，对引号，尖括号，斜杠进行转义；对于显示富文本来说，不能通过上面的办法来转义所有字符，因为这样会把需要的
+          格式也过滤掉。这种情况通常采用白名单过滤的办法，
+* CSRF攻击（跨站请求伪造）：
+*    CSRF 就是利用用户的登录态发起恶意请求。
+*    防御：get请求不对数据进行修改
+*          不让第三方网站访问到用户cookie
+*          阻止第三方网站请求接口
+*          请求时附带验证码或token
+* CSP：
+*   内容安全策略 (CSP) 是一个额外的安全层，用于检测并削弱某些特定类型的攻击，包括跨站脚本 (XSS) 和数据注入攻击等。
+*   可以通过 CSP 来尽量减少 XSS 攻击。CSP 本质上也是建立白名单，规定了浏览器只能够执行特定来源的代码。
+*   Content-Security-Policy: default-src ‘self’ 只能加载本站资源
 * */
 
 //1.实现一个div滑动的动画，由快至慢5s结束（不准用css3)。

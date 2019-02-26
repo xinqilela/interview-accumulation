@@ -41,7 +41,7 @@ this：this要在执行时才能确认值，定义时无法确认.
      不要随便改变父函数内部变量的值。
 * */
 
-function f1() {
+/*function f1() {
 
     var n = 999;
 
@@ -65,12 +65,13 @@ nAdd();
 
 result(); // 1000
 
-console.log('------------------------');
+console.log('------------------------');*/
 
 //在这段代码中，result实际上就是闭包f2函数。函数f1中的局部变量n一直保存在内存中，并没有在f1调用后被自动清除。
 //原因在于f1是f2的父函数，而f2被赋给了一个全局变量，这导致f2始终在内存中，而f2的存在依赖于f1，因此f1也始终在内存中，
 // 不会在调用结束后，被垃圾回收机制（garbage collection）回收。
 
+/*
 var name = "The Window";
 
 var object = {
@@ -104,6 +105,7 @@ var object = {
 };
 
 console.log(object.getNameFunc()()); //My Object
+*/
 
 
 /*
@@ -114,12 +116,14 @@ console.log(object.getNameFunc()()); //My Object
 *    2.函数节流:连续触发事件但是在 n 秒中只执行一次函数。
 * */
 
+
+//防抖动和节流本质是不一样的。防抖动是将多次执行变为最后一次执行，节流是将多次执行变成每隔一段时间执行
 /*
 函数防抖:
     非立即执行:触发事件后函数不会立即执行，而是在 n 秒后执行，如果在 n 秒内又触发了事件，则会重新计算函数执行时间。
     立即执行:触发事件后函数会立即执行，然后 n 秒内不触发事件才能继续执行函数的效果。
 */
-let content = document.getElementById('content');
+/*let content = document.getElementById('content');
 
 function debounce(func, awit, immediate) {
     let timeout;
@@ -152,9 +156,9 @@ function count() {
 
 // content.onmousemove = debounce(count, 1000, true);
 
-/*
+/!*
 函数节流
-*/
+*!/
 function throttle(func, wait, type) {
     if (type == 1) {
         let previous = 0;
@@ -180,7 +184,7 @@ function throttle(func, wait, type) {
     }
 }
 
-content.onmousemove = debounce(count, 1000, 2);
+content.onmousemove = debounce(count, 1000, 2);*/
 
 /*
 * apply、call、bind 区别
@@ -188,7 +192,7 @@ content.onmousemove = debounce(count, 1000, 2);
       bind 是创建一个新的函数，我们必须要手动去调用。
 * */
 
-var a = {
+/*var a = {
     name: "Cherry",
     fn: function (a, b) {
         console.log(a + b)
@@ -198,5 +202,47 @@ var a = {
 var b = a.fn;
 b.apply(a, [1, 2]);    // 3
 b.call(a, 1, 2);
-b.bind(a, 1, 2)();           // 3
+b.bind(a, 1, 2)();           // 3*/
+
+function deepCopy(source) {
+    if (!source || typeof source != 'object') {
+        return;
+    }
+    let target = source.constructor == Array ? [] : {};
+    for (var key in source) {
+        if (source.hasOwnProperty(key)) {
+            var item = source[key];
+            if (typeof item == 'object') {
+                target[key] = deepCopy(item);
+            } else {
+                target[key] = item;
+            }
+        }
+    }
+    return target;
+}
+
+var source = {
+    array:[1,2,3],
+    obj:{a:1},
+    num:1
+};
+var deepclone = deepCopy(source);
+source.array.push(4);
+console.log(deepclone);
+var lightclone = lightCopy(source);
+console.log(lightclone);
+
+function lightCopy(source) {
+    if (!source || typeof source != 'object') {
+        return;
+    }
+    var target = source.constructor == Array ? [] : {};
+    for (var key in source) {
+        if (source.hasOwnProperty(key)) {
+            target[key] = source[key];
+        }
+    }
+    return target;
+}
 

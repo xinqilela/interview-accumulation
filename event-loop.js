@@ -41,6 +41,21 @@ Node.js的事件循环:
     询问是否有要处理的事件。Node中事件主要来源于网络请求、文件IO等，这些事件对应的观察者有文件IO观察者，网络IO观察者等，
     事件循环是生产者/消费者模型，异步IO、网络请求是事件的生产者，为Node提供不同类型的事件，这些事件被传递到对应的观察者
     那里，事件循环从观察者那里取出事件并处理。
+    6个阶段：
+      1.timer阶段：执行setTimeout和setInterval
+      2.IO阶段：执行除close,定时器，setImmediate之外的回调函数
+      3.idle、prepare阶段（内部实现）
+      4.poll阶段：
+        执行到点的定时器
+        执行poll队列中的事件
+          并且当 poll 中没有定时器的情况下，会发现以下两件事情：
+          (1)如果 poll 队列不为空，会遍历回调队列并同步执行，直到队列为空或者系统限制
+          (2)如果 poll 队列为空，会有两件事发生:
+             如果有 setImmediate 需要执行，poll 阶段会停止并且进入到 check 阶段执行 setImmediate
+             如果没有 setImmediate 需要执行，会等待回调被加入到队列中并立即执行回调
+             如果有别的定时器需要被执行，会回到 timer 阶段执行回调
+      5.check阶段：执行setImmediate
+      6.close callbacks阶段：执行close事件
 * */
 /*
 * Node.js异步IO的过程：

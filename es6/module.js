@@ -146,6 +146,17 @@ import(f())
 
 
 /*
+* CommonJs 是 Node 独有的规范，浏览器中使用就需要用到 Browserify 解析了。
+* */
+//a.js
+module.exports={
+    a:1
+};
+exports.a=1;
+//b.js
+var aModule = require('a.js');
+console.log(aModule.a);
+/*
 * ES6 模块与 CommonJS 模块的差异：
 * CommonJS 模块输出的是一个值的拷贝，ES6 模块输出的是值的引用。
 * CommonJS 模块是运行时加载，ES6 模块是编译时输出接口。
@@ -153,3 +164,15 @@ import(f())
   等到脚本真正执行时，再根据这个只读引用，到被加载的那个模块里面去取值。ES6 模块不会缓存运行结果，而是动态地去
   被加载的模块取值，并且变量总是绑定其所在的模块。
 * */
+
+/*
+* AMD由require.js提出
+* */
+define(['./a','./b'],function (a,b) {
+    a.sth();
+    b.sth();
+});
+define(function (require,exports,module) {
+    var a = require('./a');
+    a.sth();
+});

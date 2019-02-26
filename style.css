@@ -25,6 +25,12 @@ margin第一个参数设为auto并不能垂直居中
 }
 
 /*
+1.重绘是当节点需要更改外观而不会影响布局的，比如改变 color 就叫称为重绘
+2.回流是布局或者几何属性需要改变就称为回流。
+  回流必定会发生重绘，重绘不一定会引发回流。回流所需的成本比重绘高的多，改变深层次的节点很可能导致父节点的一系列回流
+*/
+
+/*
 Formatting context:
  是 W3C CSS2.1 规范中的一个概念。它是页面中的一块渲染区域，并且有一套渲染规则，它决定了其子元素将如何定位，以及和其他元素的关系和相互作用。
  最常见的 Formatting context 有 Block fomatting context (简称BFC)和 Inline formatting context (简称IFC)。
