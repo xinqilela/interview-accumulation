@@ -76,8 +76,7 @@
  跟传统的try/catch代码块不同的是，如果没有使用catch方法指定错误处理的回调函数，
  Promise 对象抛出的错误不会传递到外层代码，即不会有任何反应。Promise 内部的错误不会影响到 Promise 外部的代码。
  */
-/*
- const someAsyncThing = function() {
+ /*const someAsyncThing = function() {
  return new Promise(function(resolve, reject) {
  // 下面一行会报错，因为x没有声明，但不会退出进程或者终止脚本的执行
  resolve(x + 2);

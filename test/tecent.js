@@ -80,8 +80,8 @@ for(var i = 0; i < 10; i++) {
 
 /*
 * Macrotasks和Microtasks：
-* Macrotasks的API: setTimeout, setInterval, setImmediate, I/O, UI rendering
-* Microtasks的API: process.nextTick, Promise, MutationObserver
+* Macrotasks【宏任务】的API: setTimeout, setInterval, setImmediate, I/O, UI rendering
+* Microtasks【微任务】的API: process.nextTick, Promise, MutationObserver
 * 任务队列分为 macrotasks 和 microtasks, 而promise中的then方法的函数会被推入到microtasks队列中，而setTimeout函数会被
 * 推入到macrotasks任务队列中，在每一次事件循环中，macrotask只会提取一个执行，而microtask会一直提取，直到microsoft队列
 * 为空为止。也就是说如果某个microtask任务被推入到执行中，那么当主线程任务执行完成后，会循环调用该队列任务中的下一个任务

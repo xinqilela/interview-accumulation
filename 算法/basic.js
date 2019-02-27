@@ -79,7 +79,7 @@ function insertSort(a) {
     }
     return a;
 }
-console.log(insertSort(arr));
+// console.log(insertSort(arr));
 
 //希尔排序
 function shellSort(arr, increaments) {
@@ -102,38 +102,36 @@ function shellSort(arr, increaments) {
 }
 // console.log('shellSort', shellSort(arr, [1, 3, 5]));
 
-function mergeSort(arr, left, right) {
-    //递归结束条件
-    if (right - left <= 1) {
-        if (arr[left] > arr[right]) swap(arr, left, right);
-        return;
-    }
-    var mid = Math.floor((left + right) / 2);
-    //分表
-    mergeSort(arr, left, mid - 1);
-    mergeSort(arr, mid, right);
-    //合并
-    var tmpArr = [],
-        sLeft = left,
-        sRight = mid;
-    var i = 0;
-    while (sLeft <= mid - 1 && sRight <= right) {
-        if (arr[sLeft] < arr[sRight]) tmpArr[i++] = arr[sLeft++];
-        else tmpArr[i++] = arr[sRight++];
-    }
-    while (sLeft <= mid - 1) {
-        tmpArr[i++] = arr[sLeft++];
-    }
-    while (sRight <= right) {
-        tmpArr[i++] = arr[sRight++];
-    }
-    for (var i = 0; i < tmpArr.length; i++) {
-        arr[i + left] = tmpArr[i];
+function mergeSort(arr,left,right,tmp) {
+    if(left<right){
+        var mid = Math.floor((left+right)/2);
+        mergeSort(arr,0,mid,tmp);
+        mergeSort(arr,mid+1,right,tmp);
+        merge(arr,left,mid,right,tmp);
     }
     return arr;
 }
-
-// console.log(mergeSort(arr, 0, arr.length - 1));
+function merge(arr,left,mid,right,tmp) {
+    var i = left;
+    var j = mid+1;
+    var k = 0;
+    while(i<=mid&&j<=right){
+        if(arr[i]<=arr[j]) tmp[k++]=arr[i++];
+        else tmp[k++]=arr[j++];
+    }
+    while(i<=mid){
+        tmp[k++]=arr[i++];
+    }
+    while(j<=right){
+        tmp[k++]=arr[j++];
+    }
+    var t = 0;
+    //将temp中的元素全部拷贝到原数组中
+    while(left <= right){
+        arr[left++] = tmp[t++];
+    }
+}
+console.log(mergeSort(arr, 0, arr.length - 1,[]));
 
 //将待排数组调整为大顶堆（a(i)>a(2i)&&a(i)>a(2i+1)）
 function heapAdjust(arr, i, n) {
