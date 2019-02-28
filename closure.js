@@ -223,9 +223,9 @@ function deepCopy(source) {
 }
 
 var source = {
-    array:[1,2,3],
-    obj:{a:1},
-    num:1
+    array: [1, 2, 3],
+    obj: {a: 1},
+    num: 1
 };
 var deepclone = deepCopy(source);
 source.array.push(4);
@@ -246,3 +246,20 @@ function lightCopy(source) {
     return target;
 }
 
+/*
+* 数组和类数组的区别：
+* 类数组不能调用数组原型上的方法。如push、slice、indexOf。
+* 转换：(把类数组对象转换成数组)
+* Array.prototype.slice.call(likeArray);
+* Array.from(likeArray);
+* */
+function isArray(data) {
+    return Object.prototype.toString.call(data) == 'object Array';
+}
+
+const a = ['Hello', 'Howard'];
+const b = {0: 'Hello', 1: 'Howard'};
+const c = 'Hello Howard';
+console.log(Object.prototype.toString.call(a));//"[object Array]"
+console.log(Object.prototype.toString.call(b));//"[object Object]"
+console.log(Object.prototype.toString.call(c));//"[object String]"

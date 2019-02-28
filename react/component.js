@@ -101,7 +101,7 @@
 *   (2).componentDidMount方法中的代码，是在组件已经完全挂载到网页上才会调用被执行，所以可以保证数据的加载。
 *       此外，在这方法中调用setState方法，会触发重渲染。不建议在constructor里写的原因是：会阻碍组件的实例化，
 *       阻碍组件的渲染；不建议在componentWillMount里写得原因是：如果用setState，在componentWillMount里面触发
-*       setState不会重新渲染，React 下一代调和算法 Fiber 会通过开始或停止渲染的方式优化应用性能，其会影响到
+*       setState不会重新渲染，React新版本的算法 Fiber 会通过开始或停止渲染的方式优化应用性能，其会影响到
 *       componentWillMount 的触发次数。对于 componentWillMount 这个生命周期函数的调用次数会变得不确定，React
  *      可能会多次频繁调用 componentWillMount。
 *   注意：Redux作初始数据载入时，是可以不需透过React组件的生命周期方法。可以这样作的原因：Redux的store中的状态
