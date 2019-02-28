@@ -163,6 +163,14 @@ function heapSort(arr) {
 }
 // console.log(heapSort(arr));
 
+
+/*
+* 排序算法时间复杂度:
+* o(n^2) 冒泡、选择、插入排序
+* o(n*log n) 归并排序、堆排序、快速排序
+* o(n^1.25) 希尔排序
+* */
+
 // 2. 二分查找法:只对有序的数据集有效
 function binarySearch(arr, number) {
     var left = 0,

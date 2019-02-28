@@ -115,3 +115,16 @@ btn.onclick = function () {
 Load 事件触发代表页面中的 DOM，CSS，JS，图片已经全部加载完毕。
 DOMContentLoaded 事件触发代表初始的 HTML 被完全加载和解析，不需要等待CSS，JS，图片加载。
 * */
+
+/*防止用户自己篡改页面*/
+if(window.addEventListener){
+    window.addEventListener("DOMCharacterDataModified", function(){window.location.reload();}, true);
+    window.addEventListener("DOMAttributeNameChanged", function(){window.location.reload();}, true);
+    window.addEventListener("DOMCharacterDataModified", function(){window.location.reload();}, true);
+    window.addEventListener("DOMElementNameChanged", function(){window.location.reload();}, true);
+    window.addEventListener("DOMNodeInserted", function(){window.location.reload();}, true);
+    window.addEventListener("DOMNodeInsertedIntoDocument", function(){window.location.reload();}, true);
+    window.addEventListener("DOMNodeRemoved", function(){window.location.reload();}, true);
+    window.addEventListener("DOMNodeRemovedFromDocument", function(){window.location.reload();}, true);
+    window.addEventListener("DOMSubtreeModified", function(){window.location.reload();}, true);
+}
