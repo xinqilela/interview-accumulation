@@ -44,14 +44,18 @@ JSONP:利用script标签没有跨域限制，通过script标签的src属性发�
 * */
 
 /*
-WebSocket：
-    一种通信协议，使用ws://（非加密）和wss://（加密）作为协议前缀。该协议不实行同源政策，只要服务器支持，就可以通过它进行跨源通信。
+比较：
+CORS与JSONP的使用目的相同，但是比JSONP更强大。
+JSONP只支持GET请求，CORS支持所有类型的HTTP请求。JSONP的优势在于支持老式浏览器，以及可以向不支持CORS的网站请求数据。
 * */
 
 /*
-* iframe:通过iframe设置document.domain可以实现跨域
-* 该方式只能用于二级域名相同的情况下，比如 a.test.com 和 b.test.com 适用于该方式。
-* 只需要给页面添加 document.domain = 'test.com' 表示二级域名都相同就可以实现跨域
+* document.domain:可用来得到当前网页的域名。
+* 可以给document.domain属性赋值，不过是有限制的，你只能赋成当前的域名或者基础域名。这是为了防止有人恶意修改document.domain来实现跨域偷取数据。
+* 实现跨域:
+*   前提条件：这两个域名必须属于同一个基础域名!而且所用的协议，端口都要一致，否则无法利用document.domain进行跨域.
+*   该方式只能用于二级域名相同的情况下，比如 a.test.com 和 b.test.com 适用于该方式。
+*   只需要给页面添加 document.domain = 'test.com' 表示二级域名都相同就可以实现跨域
 * */
 <!-- foo.com/a.html -->
 /*
@@ -68,7 +72,27 @@ window.onload = function () {
 */
 
 /*
-比较：
-CORS与JSONP的使用目的相同，但是比JSONP更强大。
-JSONP只支持GET请求，CORS支持所有类型的HTTP请求。JSONP的优势在于支持老式浏览器，以及可以向不支持CORS的网站请求数据。
+https://juejin.im/entry/57d7c8005bbb50005bd0de1e
+* window.postMessage(message, targetOrigin, [transfer])：方法可以安全地实现跨源通信。
+* 1.message事件的属性：data(从其他window中传来的对象)，origin(调用postMessage时发送窗口的origin)，source(对发送消息的窗口对象的引用)
+* 2.如果不是使用 window.open() 打开的页面或者 iframe 嵌入的页面，就跟当前页面扯不上任何关系，是无法使用 window.postMessage() 进行跨域通信的！
+* 3.window.postMessage() 中的 window 到底是什么呢？是你要通信的目标页面的 window！！！
+*   eg1: PageA 页面内嵌入 iframe PageB 页面
+*        -PageA 页面向 PageB 页面发送跨域信息，window 为 PageB 页面的 window，即 iframe.contentWindow。
+*        -PageB 页面向 PageA 页面发送跨域信息，window 为 PageA 页面的 window，即 top 或者 parent。
+*   eg2: PageA 页面内代码使用 window.open() 打开 PageB 页面
+*        -PageA页面向PageB页面发送跨域信息，window 为 var pageB = window.open('http://192.168.197.157:3000/pageB.html') 中的变量 pageB。
+*        -PageB页面无法主动给PageA页面发送跨域信息，必须先接收到PageA页面发送过来的 message然后再通过event.source发送给 PageA，此时的 window 就是 event.source，
+*         即 PageA 的 window。
+* 4.如果有两个页面 PageA 和 PageB，PageA 页面内嵌入 iframe PageB，那么理论上是应该可以实现双向通信的，如何实现？
+*      PageA 通过 window.postMessage() 发送一个信息给 PageB，PageB 在 window 上添加一个事件监听绑定 message 事件可以接收到来自任何
+* 不同域名通过 postMessage 方法发送过来的信息，当 PageB 接收到 PageA 发送过来的信息时执行监听事件就 OK，在监听事件的 event 参数中
+* 包含了所有 message 事件接收到的相关数据。包括发送信息的内容 event.data，发送信息的域名 event.origin 等等。同样的，在 PageA 内添加
+* 一个事件监听绑定 message 事件，在 PageB 内通过 postMessage 方法发送信息给 PageA 一样可以进行跨域通信。
+* */
+
+
+/*
+WebSocket：
+    一种通信协议，使用ws://（非加密）和wss://（加密）作为协议前缀。该协议不实行同源政策，只要服务器支持，就可以通过它进行跨源通信。
 * */

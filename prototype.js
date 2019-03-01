@@ -118,6 +118,21 @@ function inheritPrototype(subType, superType) {
     subType.prototype = prototype; //指定对象
 }
 
+/*
+* new对象的过程：
+* 1.创建新对象
+* 2.让新对象的__proto__属性指向构造函数的原型
+* 3.绑定this,执行构造函数
+* 4.返回对象
+* */
+function create() {
+    var obj = {};
+    var Constructor = [].shift.call(arguments);
+    obj.__proto__=Constructor.prototype;
+    var result = Constructor.call(obj,arguments);
+    return typeof result=='object'?result:obj;
+}
+create(SuperType);
 
 
 
