@@ -302,7 +302,7 @@ BST.prototype.insert = function (data) {
 };
 BST.prototype.preOrder = function (node) {
     if (node != null) {
-        // console.log(node.show());
+        console.log(node.show());
         this.preOrder(node.left);
         this.preOrder(node.right);
     }
@@ -310,7 +310,7 @@ BST.prototype.preOrder = function (node) {
 BST.prototype.inOrder = function (node) {
     if (node != null) {
         this.inOrder(node.left);
-        // console.log(node.show());
+        console.log(node.show());
         this.inOrder(node.right);
     }
 };
@@ -318,24 +318,23 @@ BST.prototype.postOrder = function (node) {
     if (node != null) {
         this.postOrder(node.left);
         this.postOrder(node.right);
-        // console.log(node.show());
+        console.log(node.show());
     }
 };
 //非递归遍历借助栈
 BST.prototype.unRecurPreOrder = function (node) {
-    var stack = [];
-    var p = node;
-    while (p != null || stack.length > 0) {
-        while (p != null) {
-            // console.log(p.data);
-            stack.push(p);
-            p = p.left;
-        }
-        if (stack.length > 0) {
-            p = stack.pop();
-            p = p.right;
-        }
-    }
+   if(node==null){
+       return;
+   }
+   var p = node;
+   var stack = [];
+   stack.push(p);
+   while (stack.length>0){
+       var cur = stack.pop();
+       console.log(cur.data);
+       if(cur.right) stack.push(cur.right);
+       if(cur.left) stack.push(cur.left);
+   }
 };
 BST.prototype.unRecurInOrder = function (node) {
     var stack = [];
@@ -347,31 +346,29 @@ BST.prototype.unRecurInOrder = function (node) {
         }
         if (stack.length > 0) {
             p = stack.pop();
-            // console.log(p.data);
+            console.log(p.data);
             p = p.right;
         }
     }
 };
 BST.prototype.unRecurPostOrder = function (node) {
     var stack = [];
-    var cur;                      //当前结点
+    var cur=node;                      //当前结点
     var pre = null;                 //前一次访问的结点
-    stack.push(node);
-    while (stack.length > 0) {
-        cur = stack[stack.length - 1];
-        if (
-            (cur.left == null && cur.right == null) ||
-            (pre != null && (pre == cur.left || pre == cur.right))
-        ) {
-            // console.log(cur.data);  //如果当前结点没有孩子结点或者孩子节点都已被访问过
-            stack.pop();
-            pre = cur;
-        }
-        else {
-            if (cur.right != null)
-                stack.push(cur.right);
-            if (cur.left != null)
-                stack.push(cur.left);
+    while (cur!=null||stack.length > 0) {
+        if (cur){
+            stack.push(cur);
+            cur = cur.left;
+        }else{
+            cur = stack[stack.length-1];
+            if(cur.right&&cur.right!=pre){
+                cur=cur.right;
+            }else{
+                console.log(cur.data);
+                stack.pop();
+                pre=cur;
+                cur=null;
+            }
         }
     }
 };
@@ -453,9 +450,9 @@ tree.insert(92);
 // console.log('--');
 // tree.unRecurInOrder(tree.root);
 // console.log('-------------');
-// tree.postOrder(tree.root);
-// console.log('--');
-// tree.unRecurPostOrder(tree.root);
+tree.postOrder(tree.root);
+console.log('--');
+tree.unRecurPostOrder(tree.root);
 // console.log(tree.isExist(100));
 // tree.invertTree(tree.root);
 // tree.preOrder(tree.root);

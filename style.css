@@ -25,6 +25,16 @@ margin第一个参数设为auto并不能垂直居中
 }
 
 /*
+css盒模型：
+  IE盒模型：width属性包括padding和border的宽度
+  w3c标准盒模型：width属性不包括padding和border的宽度
+  box-sizing：用于更改计算元素的默认css盒模型。
+    1.content-box:默认值
+    2.border-box:
+    3.padding-box:
+*/
+
+/*
 重回和回流:
 1.重绘是当节点需要更改外观而不会影响布局的，比如改变 color 就叫称为重绘
 2.回流是布局或者几何属性需要改变就称为回流。
@@ -67,6 +77,22 @@ Formatting context:
 flex布局：
 http://www.ruanyifeng.com/blog/2015/07/flex-grammar.html
 http://www.ruanyifeng.com/blog/2015/07/flex-examples.html
+容器属性：
+  flex-direction: row|row-reverse|column|column-reverse
+  flex-wrap: nowrap|wrap|wrap-reverse
+  flex-flow: row nowrap (flex-direction和flex-wrap的缩写)
+  justify-content: flex-start|flex-end|center|space-between|space-around
+  align-item: flex-start|flex-end|center|baseline|stretch
+  align-content: 定义了多根轴线的对其方式，如果只有一根轴线则该属性将不起作用。
+                 flex-start|flex-end|center|space-between|space-around|stretch
+项目属性：
+  order: 定义项目的排列顺序，默认为0。数值越小，越靠前。
+  flex-grow: 定义项目的放大比例，默认为0，即 即使有剩余空间，也不进行放大。
+  flex-shrink: 定义项目的缩小比例，默认为1，即 若剩余空间不足，则进行缩小。
+  align-self: 允许单个项目有与其他项目不同的对其方式。
+              flex-start|flex-end|center|baseline|stretch
+  flex-basis: 定义了在分配多余空间前，项目在主轴上所占据的空间，浏览器根据这个属性判断主轴是否有剩余空间。
+  flex: 1 1 auto(flex-grow、flex-shrink、flex-basis的缩写)
 */
 
 /*

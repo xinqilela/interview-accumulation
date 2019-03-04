@@ -273,3 +273,17 @@ const c = 'Hello Howard';
 console.log(Object.prototype.toString.call(a));//"[object Array]"
 console.log(Object.prototype.toString.call(b));//"[object Object]"
 console.log(Object.prototype.toString.call(c));//"[object String]"
+
+/*
+* 什么是函数柯里化？以及说一下JS的API有哪些应用到了函数柯里化的实现？
+* 柯里化是一种将使用多个参数的一个函数转换成一系列使用一个参数的函数的技术。
+* bind方法。
+* */
+function curry(fn) {
+    var args = Array.prototype.slice.call(arguments,1);
+    return function () {
+        var innerArgs = Array.prototype.slice.call(arguments);
+        var finnalArgs = args.concat(innerArgs);
+        return fn.apply(null,finnalArgs);
+    }
+}

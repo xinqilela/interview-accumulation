@@ -162,9 +162,3 @@ https://zh.wikipedia.org/wiki/WebSocket
 *           加盐也就是给原密码添加字符串，增加原密码长度
             sha256(sha1(md5(salt + password + slat)))
 * */
-
-//1.实现一个div滑动的动画，由快至慢5s结束（不准用css3)。
-
-//2.页面内有一个input输入框，实现在数组arr查询命中词并要求autocomplete效果。
-
-//3.实现超出整数存储范围的两个大整数相加function add(a,b)。注意a和b以及函数的返回值都是字符串。

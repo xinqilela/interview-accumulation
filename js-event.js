@@ -29,6 +29,7 @@ https://juejin.im/post/5b29cdaa518825749d2d557a#heading-0
              event.stopPropagation():取消事件的进一步冒泡或捕获
              event.stopImmediatePropagation():取消事件的进一步冒泡或捕获,同时阻止任何时间处理程序被调用
              event.target:事件目标
+             event.currentTarget：其事件处理程序当前正在处理事件的那个元素
          IE的事件对象:
              与访问DOM中的event对象不同，使用DOM0级添加处理程序时，event对象作为window对象的属性存在；使用attachEvent添加时,event会作为事件处理程序的参数传入，也可使用window.event取得。
              var event = window.event || event;
