@@ -34,7 +34,7 @@ this：this要在执行时才能确认值，定义时无法确认.
 var foo = 1;
 (function foo() {
     foo = 10
-    console.log(foo)
+    // console.log(foo)
 }()) // -> ƒ foo() { foo = 10 ; console.log(foo) }
 
 /*
@@ -239,9 +239,9 @@ var source = {
 };
 var deepclone = deepCopy(source);
 source.array.push(4);
-console.log(deepclone);
+// console.log(deepclone);
 var lightclone = lightCopy(source);
-console.log(lightclone);
+// console.log(lightclone);
 
 function lightCopy(source) {
     if (!source || typeof source != 'object') {
@@ -270,6 +270,21 @@ function isArray(data) {
 const a = ['Hello', 'Howard'];
 const b = {0: 'Hello', 1: 'Howard'};
 const c = 'Hello Howard';
-console.log(Object.prototype.toString.call(a));//"[object Array]"
-console.log(Object.prototype.toString.call(b));//"[object Object]"
-console.log(Object.prototype.toString.call(c));//"[object String]"
+// console.log(Object.prototype.toString.call(a));//"[object Array]"
+// console.log(Object.prototype.toString.call(b));//"[object Object]"
+// console.log(Object.prototype.toString.call(c));//"[object String]"
+
+/*
+map && flatMap && reduce
+map:
+flatMap: 使用映射函数映射每个元素，然后将结果压平一层
+reduce:
+* */
+var arr = [1, 3, 5, 7, 9];
+var test1 = arr.map((item, index, array) => ([item * 2])); // [ [ 2 ], [ 6 ], [ 10 ], [ 14 ], [ 18 ] ]
+// var test2 = arr.flatMap((item,index,array)=>([item*2])); // [2,6,10,14,18]
+console.log(test1);
+var sum = arr.reduce((pre, cur, index, array) => {
+    return pre + cur;
+}, 100);
+console.log(sum);

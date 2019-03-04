@@ -168,3 +168,9 @@ https://zh.wikipedia.org/wiki/WebSocket
 //2.页面内有一个input输入框，实现在数组arr查询命中词并要求autocomplete效果。
 
 //3.实现超出整数存储范围的两个大整数相加function add(a,b)。注意a和b以及函数的返回值都是字符串。
+
+/*
+* 1.http2.0
+* 2.https
+* 3.websocket
+* */
