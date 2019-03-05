@@ -6,8 +6,7 @@
 *       实现数据与视图的分离
 *       通过数据来驱动视图，开发者只需要关心数据变化，DOM操作被封装了。
 * 2.vue如何解析模板？
-* 3.介绍vue的实现流程?
-* 4.对vue的生命周期函数的理解？
+* 3.对vue的生命周期函数的理解？
 *   beforeCreate:
 *     实例初始化之后，this指向创建的实例，不能访问到data、computed、watch、methods上的方法和数据
 *   created:
@@ -18,9 +17,9 @@
 *   mounted:
 *     实例挂载到DOM上，此时可以通过DOM API获取到DOM节点，$ref属性可以访问
 *   beforeUpdate:
-*     响应式数据更新时调用，发生在虚拟DOM打补丁之前
+*     响应式数据更新时调用
 *   updated:
-*     虚拟DOM重新渲染和打补丁之后调用，组件DOM已经更新，可执行依赖于DOM的操作
+*     虚拟DOM重新渲染之后调用，组件DOM已经更新，可执行依赖于DOM的操作
 *   beforeDestroy:
 *     实例销毁之前调用。这一步，实例仍然完全可用，this仍能获取到实例
 *   destroyed:

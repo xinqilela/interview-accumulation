@@ -10,7 +10,7 @@ vue双向绑定的原理:数据劫持 + 发布-订阅模式
 4.在data值发生变更时，触发set，触发了依赖收集器中的所有Watcher的更新，来触发Watcher.update
 * */
 
-var data = { name: 'yck' }
+var data = {name: 'yck'}
 observe(data)
 let name = data.name // -> get value
 data.name = 'yyy' // -> change value
@@ -23,6 +23,7 @@ function observe(obj) {
         defineReactive(data, key, data[key])
     })
 }
+
 function defineReactive(obj, key, val) {
     // 递归子属性
     observe(val)
@@ -55,21 +56,27 @@ class Dep {
         //存储订阅者的数组
         this.subs = []
     }
+
     // 触发target上的Watcher中的addDep方法,参数为dep的实例本身
-    depend(){
-        Dep.target.addDep(this);
+    depend() {
+        if (Dep.target) {
+            Dep.target.addDep(this);
+        }
     }
+
     //添加订阅者
     addSub(sub) {
         // sub 是 Watcher 实例
         this.subs.push(sub)
     }
+
     notify() {
         this.subs.forEach(sub => {
             sub.update()
         })
     }
 }
+
 // 全局属性，通过该属性配置 Watcher
 Dep.target = null;
 
@@ -85,12 +92,14 @@ class Watcher {
         this.value = obj[key]
         Dep.target = null
     }
+
     update() {
         // 获得新值
         this.value = this.obj[this.key]
         // 调用 update 方法更新 Dom
         this.cb(this.value)
     }
+
     addDep(dep) {
         dep.addSub(this);
     }
