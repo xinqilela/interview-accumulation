@@ -54,6 +54,15 @@ https://imweb.io/topic/55e3ba46771670e207a16bc8
 * */
 
 /*
+* TCP && UDP
+* 1.TCP协议是面向连接；UDP协议采用无连接；TCP用三次握手建立连接,UDP发送数据前不需要建立连接。
+* 2.TCP提供可靠传输，UDP不可靠；TCP丢包会自动重传，UDP不会。
+* 3.TCP传输慢，UDP传输快；因为TCP需要建立连接、保证可靠性和有序性，所以比较耗时。
+* 4.TCP的头部比UDP大；TCP头部需要20字节，UDP头部只要8个字节
+* 5.TCP有序，UDP无序；消息在传输过程中可能会乱序，后发送的消息可能会先到达，TCP会对其进行重排序，UDP不会。
+* */
+
+/*
 https://juejin.im/post/59d489156fb9a00a571d6509
 * 浏览器的渲染过程?
   1.解析 HTML 标记并构建 DOM 树。
@@ -96,36 +105,104 @@ https://juejin.im/post/59d489156fb9a00a571d6509
     500 Internal Server Error服务器发生不可预期的错误
     502 Bad Gateway	         作为网关或者代理工作的服务器尝试执行请求时，从远程服务器接收到了一个无效的响应
     503 Server Unavailable   由于超载或系统维护，服务器暂时的无法处理客户端的请求。
+  3.Http头部：
+    (1)请求头
+       Accept                能够接受的回应内容类型        Accept: text/plain
+       Accept-Encoding       能够接受的编码方式列表        Accept-Encoding: gzip, deflate
+       Cache-Control         指定在这次的请求/响应链中的所有缓存机制      Cache-Control: no-cache
+       Connection            浏览器想要优先使用的连接类型                 Connection: keep-alive
+       Content-Length        请求体的长度                                 Content-Length: 348
+       Content-Type          请求体的多媒体类型                           Content-Type: application/x-www-form-urlencoded
+       Host                  服务器的域名                                 Host: en.wikipedia.org
+       Origin                发起一个针对跨来源资源共享的请求             Origin: http://www.example-social-network.com
+       If-Modified-Since     允许在对应的内容未被修改的情况下返回304未修改    If-Modified-Since: Sat, 29 Oct 1994 19:43:31 GMT
+       If-None-Match         允许在对应的内容未被修改的情况下返回304未修改    If-None-Match: "737060cd8c284d8af7ad3082f209582d"
+       User-Agent            浏览器的浏览器身份标识字符串                     User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:12.0) Gecko/20100101 Firefox/21.0
+       Upgrade               要求服务器升级到另一个协议                       Upgrade: HTTP/2.0, SHTTP/1.3, IRC/6.9, RTA/x11
+    (2)响应头
+       Access-Control-Allow-Origin    指定哪些网站可参与到跨来源资源共享过程中    Access-Control-Allow-Origin: *
+       Content-Length                 回应消息体的长度，以字节为单位              Content-Length: 348
+       Last-Modified                  所请求的对象的最后修改日期                  Last-Modified: Tue, 15 Nov 1994 12:45:26 GMT
+       ETag                           对于某个资源的某个特定版本的一个标识符      ETag: "737060cd8c284d8af7ad3082f209582d"
+       Expires                        指定一个日期/时间，超过该时间则认为此回应已经过期    Expires: Thu, 01 Dec 1994 16:00:00 GMT
+* */
+
+/*
+* GET && POST 请求的区别:
+*   1.GET在浏览器回退时是无害的，而POST会再次提交请求
+*   2.GET请求会被浏览器主动cache，而POST不会，除非手动设置。
+*   3.GET请求只能进行url编码，而POST支持多种编码方式。
+*   4.GET请求在URL中传送的参数是有长度限制的，而POST么有
+*   5.对参数的数据类型，GET只接受ASCII字符，而POST没有限制
+*   6.GET比POST更不安全，因为参数直接暴露在URL上，所以不能用来传递敏感信息
+*   7.GET参数通过URL传递，POST放在Request body中
+*   8.GET和POST本质上就是TCP链接，并无差别。但是由于HTTP的规定和浏览器/服务器的限制，导致他们在应用过程中体现出一些不同。
+*     GET产生一个TCP数据包；POST产生两个TCP数据包。
+*     对于GET方式的请求，浏览器会把http header和data一并发送出去，服务器响应200（返回数据）；
+*     而对于POST，浏览器先发送header，服务器响应100 continue，浏览器再发送data，服务器响应200 ok（返回数据）。
 * */
 
 /*
 * 前端性能优化：
-* https://csspod.com/frontend-performance-best-practices/
-* 1.页面内容：
-*   减少http请求  eg:使用css sprite，将背景图片合并成一个文件，通过background-image 和 background-position 控制显示。
-*   减少DNS查询   eg:把资源分布到 2 个域名上（最多不超过 4 个）。这是减少 DNS 查询同时保证并行下载的折衷方案。
-*   DNS预解析     eg:<link rel="dns-prefetch" href="//yuchengkai.cn">
-*   预渲染           <link rel="prerender" href="http://example.com">
-*   避免重定向    eg:URL 末尾应该添加/但未添加。比如，访问 http://astrology.yahoo.com/astrology 将被 301 重定向到 http://astrology.yahoo.com/astrology/。
-*   缓存 Ajax 请求
-*   懒加载      eg:将首屏以外的 HTML 放在不渲染的元素中，如隐藏的 <textarea>，或者 type 属性为非执行脚本的 <script> 标签中，
-*                    减少初始渲染的 DOM 元素数量，提高速度。等首屏加载完成或者用户操作时，再去渲染剩余的页面内容。
-*   懒执行      eg:将某些逻辑延迟到使用时再计算
-*   预先加载         <link rel="preload" href="http://example.com">
-*       无条件预先加载：页面加载完成（load）后，马上获取其他资源。以 google.com 为例，首页加载完成后会立即下载一个
-*                       Sprite 图片，此图首页不需要，但是搜索结果页要用到。
-*       有条件预先加载：根据用户行为预判用户去向，预载相关资源。比如 search.yahoo.com 开始输入时会有额外的资源加载。
-*                        Chrome 等浏览器的地址栏也有类似的机制。
-*       有「阴谋」的预先加载：页面即将上线新版前预先加载新版内容。
-*   减少DOM元素数量  eg:能通过伪元素实现的功能，就没必要添加额外元素，如清除浮动
-* 2.服务器：
-*   使用CDN  eg:网站 80-90% 响应时间消耗在资源下载上，减少资源下载时间是性能优化的黄金发则。
-*   添加 Expires 或 Cache-Control 响应头  eg:静态内容：将 Expires 响应头设置为将来很远的时间，实现「永不过期」策略
-*                                         eg:动态内容：设置合适的 Cache-Control 响应头，让浏览器有条件地发起请求。
-*   启用Gzip  eg:Gzip 压缩通常可以减少 70% 的响应大小，对某些文件更可能高达 90%。主流 Web 服务器都有相应模块，
-*                而且绝大多数浏览器支持 gzip 解码。所以，应该对 HTML、CSS、JS、XML、JSON 等文本类型的内容启用压缩。
-*   配置Etag eg:Etag 通过文件版本标识，方便服务器判断请求的内容是否有更新，如果没有就响应 304，避免重新下载。
+* 1.网络请求方面:
+*     (1) DNS预解析     eg:<link rel="dns-prefetch" href="//yuchengkai.cn">
+*     (2) 缓存          强缓存(Expires、Cache-Control )&& 协商缓存(Last-Modified 、If-Modified-Since 和 ETag、If-None-Match)
+*                       eg: Expires: Wed, 22 Oct 2018 08:41:00 GMT  表示资源会在 Wed, 22 Oct 2018 08:41:00 GMT 后过期，需要再次请求。
+*                           Cache-control: max-age=30               示资源会在30 秒后过期，需要再次请求
+*                           Last-Modified 表示本地文件最后修改日期，If-Modified-Since 会将 LastModified 的值发送给服务器，询问服务器在该日期后资源是否有更新，
+*                           有更新的话就会将新的资源发送回来
+*                           ETag 类似于文件指纹，If-None-Match 会将当前 ETag 发送给服务器，询问该资源 ETag 是否变动，有变动的话就将新的资源发送回来
+*     (3)使用 HTTP / 2.0
+*     (4)预加载         eg:<link rel="preload" href="http://example.com">
+*     (5)预渲染         eg:<link rel="prerender" href="http://example.com">
+*     (6)避免重定向
+* 2.优化渲染过程:
+*     (1)懒执行         eg:懒执行就是将某些逻辑延迟到使用时再计算。该技术可以用于首屏优化，对于某些耗时逻辑并不需要在首屏就使用的，就可以使用懒执行
+*     (2)懒加载         eg:懒加载就是将不关键的资源延后加载
+* 3.文件优化:
+*     (1)图片文件优化   eg:使用字体图标、使用base64格式的图片、使用css sprite
+*     (2)其他文件优化   eg:CSS 文件放在 head 中、服务端开启文件压缩功能、将 script 标签放在 body 底部、对于需要很多时间计算的代码可以考虑使用Webworker
+*     (3)CDN            eg:静态资源尽量使用 CDN 加载，由于浏览器对于单个域名有并发请求上限，可以考虑使用多个 CDN 域名。
+*                          对于 CDN 加载静态资源需要注意 CDN 域名要与主站不同，否则每次请求都会带上主站的 Cookie。
+*     (4)监控           eg:对于代码运行错误，通常的办法是使用 window.onerror 拦截报错;
+*                          对于跨域的代码运行错误会显示 Script error. 对于这种情况我们需要给script 标签添加 crossorigin 属性
+*                          对于异步代码来说，可以使用 catch 的方式捕获错误
+* 4.其他:
+*     (1)使用 Webpack 优化项目
+*                       eg:打包项目使用 production 模式，这样会自动开启代码压缩;
+*                          优化图片，对于小图可以使用 base64 的方式写入文件中;
+*                          按照路由拆分代码，实现按需加载;
+*                          给打包出来的文件名添加哈希，实现浏览器缓存文件。
 * */
+
+//如何渲染出几万条数据而不卡住界面?
+//注意:不能一次性将几万条都渲染出来，而应该一次渲染部分 DOM，那么就可以通过 requestAnimationFrame 来每 16 ms 刷新一次
+//window.requestAnimationFrame() 告诉浏览器——你希望执行一个动画，并且要求浏览器在下次重绘之前调用指定的回调函数更新动画。
+//该方法需要传入一个回调函数作为参数，该回调函数会在浏览器下一次重绘之前执行
+setTimeout(function () {
+    const total = 100000;
+    const onece = 20;
+    const loopCount = total/onece;
+    let countOfRender = 0;
+    let ul = document.querySelector('ul');
+    function add() {
+        const fragment = document.createDocumentFragment();
+        for(let i=0;i<onece;i++){
+            const li = document.createElement('li');
+            li.innerHTML =  Math.floor(Math.random()*total);
+            fragment.appendChild(li);
+        }
+        ul.appendChild(fragment);
+        countOfRender++;
+        loop();
+    }
+    function loop() {
+        if(countOfRender<loopCount){
+            window.requestAnimationFrame(add);
+        }
+    }
+    loop();
+},0);
 
 /*
 http://www.ruanyifeng.com/blog/2017/05/websocket.html
@@ -203,6 +280,8 @@ socket.addEventListener("error", function(event) {
 
 /*
 Http && Https:
+  Https: 是一种通过计算机网络进行安全通信的传输协议。HTTPS经由HTTP进行通信，但利用SSL/TLS来加密数据包。HTTPS开发的主要目的，是提供对网站服务器的身份认证，
+         保护交换数据的隐私与完整性。HTTPS连接经常用于万维网上的交易支付和企业信息系统中敏感信息的传输。
   1.HTTPS协议需要到CA申请证书，一般免费证书很少，需要交费。
   2.HTTP协议运行在TCP之上，所有传输的内容都是明文，HTTPS运行在SSL/TLS之上，SSL/TLS运行在TCP之上，所有传输的内容都经过加密的。
   3.HTTP和HTTPS使用的是完全不同的连接方式，用的端口也不一样，前者是80，后者是443。

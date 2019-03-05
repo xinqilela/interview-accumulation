@@ -270,9 +270,9 @@ function isArray(data) {
 const a = ['Hello', 'Howard'];
 const b = {0: 'Hello', 1: 'Howard'};
 const c = 'Hello Howard';
-console.log(Object.prototype.toString.call(a));//"[object Array]"
-console.log(Object.prototype.toString.call(b));//"[object Object]"
-console.log(Object.prototype.toString.call(c));//"[object String]"
+// console.log(Object.prototype.toString.call(a));//"[object Array]"
+// console.log(Object.prototype.toString.call(b));//"[object Object]"
+// console.log(Object.prototype.toString.call(c));//"[object String]"
 
 /*
 * 什么是函数柯里化？以及说一下JS的API有哪些应用到了函数柯里化的实现？
@@ -300,8 +300,15 @@ reduce:
 var arr = [1, 3, 5, 7, 9];
 var test1 = arr.map((item, index, array) => ([item * 2])); // [ [ 2 ], [ 6 ], [ 10 ], [ 14 ], [ 18 ] ]
 // var test2 = arr.flatMap((item,index,array)=>([item*2])); // [2,6,10,14,18]
-console.log(test1);
+// console.log(test1);
 var sum = arr.reduce((pre, cur, index, array) => {
     return pre + cur;
 }, 100);
-console.log(sum);
+// console.log(sum);
+
+
+//js生成随机数
+function getRandom(min,max) {
+    return Math.floor(Math.random()*(max-min+1)+min);
+}
+console.log(getRandom(0,100));
