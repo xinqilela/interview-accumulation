@@ -26,3 +26,16 @@
 *   destroyed:
 *     实例销毁后调用，调用后，Vue 实例指示的所有东西都会解绑定，所有的事件监听器会被移除，所有的子实例也会被销毁
 * */
+
+
+
+/*
+* 双向绑定的实现:
+* 1.发布订阅模式( KnockoutJS )
+* 2.脏检查( Angular )
+* 3.数据劫持:
+*   Object.defineProperty( vue )
+*   Proxy( vue未来会使用 )
+*   Object.observe( 已废弃 )
+* 4.数据模型( Ember )
+* */
