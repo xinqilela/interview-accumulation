@@ -1,4 +1,4 @@
-var fetch = require("fetch").fetchUrl;
+// var fetch = require("fetch").fetchUrl;
 /**
  * Created by Administrator on 2019/2/18 0018.
  */
@@ -35,7 +35,7 @@ async function asyncPrint(value,ms) {
     console.log(value);
 }
 
-// asyncPrint('hello',5000);
+asyncPrint('hello',5000);
 
 async function f() {
     // return 'hello word';

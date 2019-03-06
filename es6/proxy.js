@@ -10,9 +10,13 @@
 *   6.deleteProperty        用于拦截delete操作，如果这个方法抛出错误或者返回false，当前属性就无法被delete命令删除。
 *   7.defineProperty        拦截了Object.defineProperty操作
 *   8.getOwnPropertyDescriptor     拦截Object.getOwnPropertyDescriptor()，返回一个属性描述对象或者undefined。
-*   9.getPrototypeOf               用来拦截获取对象原型
-*   10.
-*   11.
-*   12.
-*   13.
+*   9.getPrototypeOf               用来拦截获取对象原型     注意：getPrototypeOf方法的返回值必须是对象或者null，否则报错。
+*                                  另外，如果目标对象不可扩展（non-extensible）， getPrototypeOf方法必须返回目标对象的原型对象。
+*   10.isExtensible         拦截Object.isExtensible操作      注意：注意，该方法只能返回布尔值，否则返回值会被自动转为布尔值。
+                            这个方法有一个强限制，它的返回值必须与目标对象的isExtensible属性保持一致，否则就会抛出错误。
+*   11.ownKeys              用来拦截对象自身属性的读取操作
+*   12.preventExtensions    拦截Object.preventExtensions()。该方法必须返回一个布尔值，否则会被自动转为布尔值。
+                            注：这个方法有一个限制，只有目标对象不可扩展时（即Object.isExtensible(proxy)为false），
+                            proxy.preventExtensions才能返回true，否则会报错。
+*   13.setPrototypeOf       用来拦截Object.setPrototypeOf方法
 * */
