@@ -1,5 +1,17 @@
-async function func() {
-    var a = await setTimeout(()=>{console.log('a')},20);
-    var b = await setTimeout(()=>{console.log('b')},6);
+function foo() {
+    return a++;
 }
-func();
+
+function foo2() {
+    var a = 0;
+    return foo();
+}
+
+// console.log(foo2());
+console.log(typeof a);
+var a=1;
+console.log(typeof a);
+function a() {
+
+}
+console.log(typeof a);
