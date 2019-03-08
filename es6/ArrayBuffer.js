@@ -20,3 +20,9 @@
 *   注: 普通数组的操作方法和属性，对 TypedArray 数组完全适用, TypedArray 数组没有concat方法。
 * 3.DataView视图: 可以自定义复合格式的视图，比如第一个字节是 Uint8、第二、三个字节是 Int16、第四个字节开始是 Float32等等，还可以自定义字节序。
 * */
+
+console.log([1, 2, 3, 4].map(parseInt));
+console.log([1, 2, 3, 4].map((item, index) => {
+    return parseInt(item, index);
+}));
+console.log(parseInt(10,2));
