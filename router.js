@@ -123,3 +123,11 @@ ul.addEventListener('click', e => {
         Router.go(e.target.getAttribute('href'));
     }
 });
+
+/*
+* hash-router:
+* */
+
+/*
+* history-router:
+* */

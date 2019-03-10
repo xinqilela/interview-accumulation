@@ -1,6 +1,6 @@
 /*
-* 1.axios
-* 2.对路由的理解
+* √ 1.axios
+* 2.对路由的理解         hash-router和history-router
 * 3.React.component和React.PureComponent的区别
 * 4.函数组件和类组件的区别
 * 5.编写类组件为什么要继承React.component
