@@ -42,8 +42,38 @@
            component.setState(newState);
        }
      (2)异步操作解决方案
-        写出一个返回函数的 Action Creator，然后使用redux-thunk中间件改造store.dispatch
-* 8.connect函数的理解
+        .1让Action Creator返回一个函数，使用redux-thunk中间件改造store.dispatch，使得store.dispatch可以接受函数作为参数；
+        const fetchPosts = postTitle => (dispatch, getState) => {
+            dispatch(requestPosts(postTitle));
+            return fetch(`/some/API/${postTitle}.json`)
+                .then(response => response.json())
+                .then(json => dispatch(receivePosts(postTitle, json)));
+        };
+        store.dispatch(fetchPosts('reactjs'));
+        .2让Action Creator返回一个Promise对象，使用redux-promise中间件改造store.dispatch，使得store.dispatch可以接受promise作为参数；
+        const fetchPosts =  (dispatch, postTitle) => new Promise(function (resolve, reject) {
+            dispatch(requestPosts(postTitle));
+            return fetch(`/some/API/${postTitle}.json`)
+                .then(response => {
+                     type: 'FETCH_POSTS',
+                     payload: response.json()
+                 });
+        });
+        store.dispatch(fetchPosts('reactjs'));
+* 8.connect函数的理解: 用于从 UI 组件生成容器组件
+*       const VisibleTodoList = connect(mapStateToProps,mapDispatchToProps)(TodoList);
+*       (1)mapStateToProps建立一个从（外部的）state对象到（UI 组件的）props对象的映射关系。作为函数，mapStateToProps执行后应该
+*          返回一个对象，里面的每一个键值对就是一个映射。
+*          mapStateToProps会订阅 Store，每当state更新的时候，就会自动执行，重新计算 UI 组件的参数，从而触发 UI 组件的重新渲染。
+*          mapStateToProps的第一个参数总是state对象，还可以使用第二个参数，代表容器组件的props对象。
+*          mapStateToProps使用第二个参数后，如果容器组件的参数发生变化，也会引发UI组件重新渲染。
+*          connect方法可以省略mapStateToProps参数，那样的话，UI 组件就不会订阅Store，就是说 Store 的更新不会引起 UI 组件的更新。
+*       (2)mapDispatchToProps用来建立 UI 组件的参数到store.dispatch方法的映射，它定义了哪些用户的操作应该当作Action传给Store。
+*          如果mapDispatchToProps是一个函数，会得到dispatch和ownProps（容器组件的props对象）两个参数，mapDispatchToProps作为函数，
+*          应该返回一个对象，该对象的每个键值对都是一个映射，定义了 UI 组件的参数怎样发出 Action。
+*          如果mapDispatchToProps是一个对象，它的每个键名也是对应 UI 组件的同名参数，键值应该是一个函数，会被当作 Action creator ，
+*          返回的 Action 会由 Redux 自动发出。
+*
 * √ 9.Array、Set、Object、Map的区别
 * √ 10.在类组件中绑定this有那些方法？有什么区别?
 *    (1)在构造函数中使用bind方法绑定      this.handleClick = this.handleClick.bind(this);
