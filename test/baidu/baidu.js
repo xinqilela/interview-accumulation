@@ -34,6 +34,15 @@
 *      虽然React会在构造函数运行之后，为this.props 赋值，但在super()调用之后与构造函数结束之前，this.props 仍然是没法用的;
 * 7.Redux的工作原理
 *   (1)工作流程：
+*      用户在界面进行操作，调用store.dispatch()发出action;    store.dispatch(action);
+*      store接收到action后自动调用reducer，并传入2个参数（当前state和action）,Reducer会返回新的state给store;    let nextState = todoApp(previousState, action);
+*      state一旦有变化，store就会调用监听函数,获取当前状态，触发view的重新渲染。    store.subscribe(listener);
+*      function listerner() {
+           let newState = store.getState();
+           component.setState(newState);
+       }
+     (2)异步操作解决方案
+        写出一个返回函数的 Action Creator，然后使用redux-thunk中间件改造store.dispatch
 * 8.connect函数的理解
 * √ 9.Array、Set、Object、Map的区别
 * √ 10.在类组件中绑定this有那些方法？有什么区别?
