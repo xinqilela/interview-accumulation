@@ -1,13 +1,26 @@
 /*
 https://juejin.im/post/5ac61da66fb9a028c71eae1b
+https://juejin.im/entry/5a2cbd51f265da430b7b2b82
 * 前端路由实现:
 * 1.hash路由
+      url 上的 hash 以 # 开头，原本是为了作为锚点，方便用户在文章导航到相应的位置。因为 hash 值的改变不会引起页面的刷新，因此可以用 hash 值来做单页面应用的路由，
+    并且当 url 的 hash 发生变化的时候，可以触发相应 hashchange 回调函数。
 * 2.history路由:
-*   HTML5新路由方案
+*     History 路由是基于 HTML5 规范，在 HTML5 规范中提供了 history.pushState || history.replaceState 来进行路由控制。
+*     history 的改变并不会触发任何事件，这让我们无法直接去监听 history 的改变从而做出相应的改变。
+*     对于一个应用而言，url 的改变(不包括 hash 值得改变)只能由下面三种情况引起：
+*       (1)点击浏览器的前进或后退按钮、
+*       (2)点击a标签、
+*       (3)在JS代码中触发 history.push(replace)State函数
+*          对上述三种情况进行拦截，可以变相监听到 history 的改变而做出调整。
+*          针对情况1，HTML5 规范中有相应的 onpopstate 事件，通过它可以监听到前进或者后退按钮的点击。
+*          针对情况2 ,要为所有的a(href)标签绑定click事件,在事件触发时,利用history.push(replace)State进行路由跳转并更新视图，
+*          针对情况3 ,在 JS 直接触发 pushState 函数，那么这时候你必须要调用视图更新函数，否则就是出现视图内容和 url 不一致的情况
+*
 * */
 /*class Routers {
     constructor() {
-        // 储存hash与callback键值对
+        // 存放不同路由对应的回调函数
         this.routes = {};
         // 当前hash
         this.currentUrl = '';
@@ -19,7 +32,9 @@ https://juejin.im/post/5ac61da66fb9a028c71eae1b
         this.backOff = this.backOff.bind(this);
         // 默认不是后退操作
         this.isBack = false;
+        //在 load 事件发生后刷新页面
         window.addEventListener('load', this.refresh, false);
+        //当 hash 值改变时触发对应回调函数
         window.addEventListener('hashchange', this.refresh, false);
     }
 
