@@ -32,8 +32,8 @@
 *      在调用父类构造函数之前，无法用this,JavaScript强制开发者在构造函数中先调用super，才能使用this;
 *      如果不传props，直接调用了super()，仍然可以在 render 和其他方法中访问this.props,因为React会在构造函数被调用之后，把props赋值给刚刚创建的实例对象;
 *      虽然React会在构造函数运行之后，为this.props 赋值，但在super()调用之后与构造函数结束之前，this.props 仍然是没法用的;
-* 7.Redux的工作原理
-*   (1)工作流程：
+* √ 7.Redux的工作原理
+*    (1)工作流程：
 *      用户在界面进行操作，调用store.dispatch()发出action;    store.dispatch(action);
 *      store接收到action后自动调用reducer，并传入2个参数（当前state和action）,Reducer会返回新的state给store;    let nextState = todoApp(previousState, action);
 *      state一旦有变化，store就会调用监听函数,获取当前状态，触发view的重新渲染。    store.subscribe(listener);
@@ -41,8 +41,8 @@
            let newState = store.getState();
            component.setState(newState);
        }
-     (2)异步操作解决方案
-        .1让Action Creator返回一个函数，使用redux-thunk中间件改造store.dispatch，使得store.dispatch可以接受函数作为参数；
+      (2)异步操作解决方案
+        【1】让Action Creator返回一个函数，使用redux-thunk中间件改造store.dispatch，使得store.dispatch可以接受函数作为参数；
         const fetchPosts = postTitle => (dispatch, getState) => {
             dispatch(requestPosts(postTitle));
             return fetch(`/some/API/${postTitle}.json`)
@@ -50,7 +50,7 @@
                 .then(json => dispatch(receivePosts(postTitle, json)));
         };
         store.dispatch(fetchPosts('reactjs'));
-        .2让Action Creator返回一个Promise对象，使用redux-promise中间件改造store.dispatch，使得store.dispatch可以接受promise作为参数；
+        【2】让Action Creator返回一个Promise对象，使用redux-promise中间件改造store.dispatch，使得store.dispatch可以接受promise作为参数；
         const fetchPosts =  (dispatch, postTitle) => new Promise(function (resolve, reject) {
             dispatch(requestPosts(postTitle));
             return fetch(`/some/API/${postTitle}.json`)
@@ -60,20 +60,28 @@
                  });
         });
         store.dispatch(fetchPosts('reactjs'));
-* 8.connect函数的理解: 用于从 UI 组件生成容器组件
+*√ 8.connect函数的理解: 用于从 UI 组件生成容器组件
 *       const VisibleTodoList = connect(mapStateToProps,mapDispatchToProps)(TodoList);
-*       (1)mapStateToProps建立一个从（外部的）state对象到（UI 组件的）props对象的映射关系。作为函数，mapStateToProps执行后应该
-*          返回一个对象，里面的每一个键值对就是一个映射。
+*       (1)mapStateToProps负责输入逻辑，即将state映射到 UI 组件的参数（props）。
+*          作为函数，mapStateToProps执行后应该返回一个对象，里面的每一个键值对就是一个映射。
 *          mapStateToProps会订阅 Store，每当state更新的时候，就会自动执行，重新计算 UI 组件的参数，从而触发 UI 组件的重新渲染。
 *          mapStateToProps的第一个参数总是state对象，还可以使用第二个参数，代表容器组件的props对象。
 *          mapStateToProps使用第二个参数后，如果容器组件的参数发生变化，也会引发UI组件重新渲染。
 *          connect方法可以省略mapStateToProps参数，那样的话，UI 组件就不会订阅Store，就是说 Store 的更新不会引起 UI 组件的更新。
-*       (2)mapDispatchToProps用来建立 UI 组件的参数到store.dispatch方法的映射，它定义了哪些用户的操作应该当作Action传给Store。
+*       (2)mapDispatchToProps负责输出逻辑，即将用户对 UI 组件的操作映射成 Action，它定义了哪些用户的操作应该当作 Action，传给 Store。
 *          如果mapDispatchToProps是一个函数，会得到dispatch和ownProps（容器组件的props对象）两个参数，mapDispatchToProps作为函数，
 *          应该返回一个对象，该对象的每个键值对都是一个映射，定义了 UI 组件的参数怎样发出 Action。
 *          如果mapDispatchToProps是一个对象，它的每个键名也是对应 UI 组件的同名参数，键值应该是一个函数，会被当作 Action creator ，
 *          返回的 Action 会由 Redux 自动发出。
-*
+*       (3)connect方法生成容器组件以后，需要让容器组件拿到state对象，才能生成 UI 组件的参数。React-Redux 提供Provider组件，可以让容器组件拿到state。
+*          let store = createStore(todoApp);
+           render(
+             <Provider store={store}>
+               <App />
+             </Provider>,
+           document.getElementById('root')
+           );
+           Provider在根组件外面包了一层，这样一来，App的所有子组件就默认都可以拿到state了,它的原理是React组件的context属性。
 * √ 9.Array、Set、Object、Map的区别
 * √ 10.在类组件中绑定this有那些方法？有什么区别?
 *    (1)在构造函数中使用bind方法绑定      this.handleClick = this.handleClick.bind(this);
@@ -87,10 +95,30 @@
 *    (4)在定义阶段使用箭头函数绑定        handleClick = () => {    console.log('this > ', this);  }
 *       优: 创建方法就绑定this，不需要在类构造函数中绑定，调用的时候不需要再作绑定
 *       缺: 带参就会和在render方法中使用bind方法绑定相同，这样代码量就变多了
-* 11.浏览器的事件循环机制?
-* 12.webpack的作用是什么？和gulp有什么区别?你配置过webpack吗？
-* 13.git的使用流程?
-* 14.前端性能优化方法有哪些？
+* √ 11.浏览器的事件循环机制?
+*    http://lynnelv.github.io/js-event-loop-browser
+* √ 12.git的使用流程?
+*    (1)git config --global user.name "Your Name"
+*       git config --global user.email "email@example.com"
+*       --global参数，表示你这台机器上所有的Git仓库都会使用这个配置，当然也可以对某个仓库指定不同的用户名和Email地址。
+*    (2)ssh-keygen -t rsa -C "email@example.com"
+*       在用户主目录里找到.ssh目录，里面有 id_rsa 和 id_rsa.pub 两个文件，这两个就是 SSH Key 的秘钥对，id_rsa是私钥，不能泄露出去，id_rsa.pub是公钥
+*    (2)git init                       初始化一个Git仓库
+*       git add <file>                 把文件修改添加到暂存区
+*       git commit -m <message>        把暂存区的所有内容提交到当前分支
+*    (3)git status                     显示工作区和暂存区的状态
+*    (4)git log                        查看提交历史，以便确定要回退到哪个版本
+*       git reflog                     查看命令历史，以便确定要回到未来的哪个版本
+*    (5)git checkout -- file           [修改未添加到暂存区]            把file文件在工作区的修改全部撤销【没有--，就变成了“切换到另一个分支”的命令】
+*       git reset HEAD <file>          [修改添加到暂存区但未commit]    把暂存区的修改撤销掉（unstage），重新放回工作区
+*       git reset --hard HEAD^         [commit了不合适的修改到版本库]  把当前版本回退到上一个commit版本
+*       git reset --hard commit_id     [commit了不合适的修改到版本库]  回退到某个指定版本
+*    (6)当你在文件管理器中把没用的文件删了，或者用rm命令删了,使用git status命令会立刻告诉你哪些文件被删除了,如果确实要从版本库中删除改文件则使用git rm 删除掉并且
+*       git commit,现在文件就从版本库中被删除了；如果失误删除，由于版本库里还有，可以使用git checkout -- test.txt把误删的文件恢复到最新版本。
+*    (7)git remote add origin git@github.com:xxx/xxx.git
+*       git push -u origin master       把本地库的所有内容推送到远程库上,
+*                                       加上了-u参数，Git不但会把本地的master分支内容推送的远程新的master分支，还会把本地的master分支和远程的master分支关联起来
+*        git clone git@github.com:xxx/xxx.git
 * */
 
 /*React.component和React.PureComponent的区别:

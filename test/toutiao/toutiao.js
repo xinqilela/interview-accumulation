@@ -45,6 +45,7 @@ new Queue()
     console.log(3);
 }).start();*/
 
+/*
 function once(fn) {
     var result;
     return function() {
@@ -65,4 +66,13 @@ var test = function () {
 var res = once(test);
 res();
 res();
-res();
+res();*/
+
+var str = 'xx\'xx\'yyy"xxx"xx"xxx\'';
+// var regx = /('[^']*')|("[^"]*")/g;
+var regx = /(')|(")/g;
+var test = regx.exec(str);
+while (test){
+    console.log(test);
+    test = regx.exec(str);
+}

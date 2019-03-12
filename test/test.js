@@ -1,3 +1,4 @@
+/*
 function foo() {
     return a++;
 }
@@ -14,4 +15,4 @@ console.log(typeof a);
 function a() {
 
 }
-console.log(typeof a);
+console.log(typeof a);*/
