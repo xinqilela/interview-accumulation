@@ -77,8 +77,42 @@ res();*/
 //     test = regx.exec(str);
 // }
 
-function getDelayDay(number,startDate) {
+var holadays = ['2019-04-05', '2019-04-06','2019-09-29','2019-10-01','2019-10-02','2019-10-03','2019-10-04','2019-10-05',
+    '2019-10-06','2019-10-07'];
+var weekDaysOff = ['2019-10-12'];
 
+function getDateStr(date) {
+    var year = date.getFullYear();
+    var month = date.getMonth() + 1;
+    var day = date.getDate();
+    month = month < 10 ? '0' + month : month;
+    day = day < 10 ? '0' + day : day;
+    return `${year}-${month}-${day}`;
 }
 
-console.log(getDelayDay(10,new Date(2019,8,30)));
+function getDelayDay(number, startDate) {
+    startDate = startDate.getTime();
+    var oneDay = 1000 * 60 * 60 * 24;
+    var endDate = startDate + number * oneDay;
+    var calDate = new Date();
+    var holadayCount = 0;
+    for (var i = startDate; i < endDate; i += oneDay) {
+        calDate.setTime(i);
+        var day = calDate.getDay();
+        var tmp = getDateStr(calDate);
+        if (day >= 1 && day <= 5) {
+            if (holadays.indexOf(tmp) > -1) {
+                holadayCount++;
+            }
+        } else {
+            if (weekDaysOff.indexOf(day) > -1) {
+                holadayCount--;
+            } else {
+                holadayCount++;
+            }
+        }
+    }
+    return new Date(endDate + holadayCount * oneDay);
+}
+
+console.log(getDelayDay(18, new Date(2019, 8, 25)));
