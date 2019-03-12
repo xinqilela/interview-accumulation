@@ -68,11 +68,17 @@ res();
 res();
 res();*/
 
-var str = 'xx\'xx\'yyy"xxx"xx"xxx\'';
-// var regx = /('[^']*')|("[^"]*")/g;
-var regx = /(')|(")/g;
-var test = regx.exec(str);
-while (test){
-    console.log(test);
-    test = regx.exec(str);
+// var str = 'xx\'xx\'yyy"xxx"xx"xxx\'';
+// // var regx = /('[^']*')|("[^"]*")/g;
+// var regx = /(')|(")/g;
+// var test = regx.exec(str);
+// while (test){
+//     console.log(test);
+//     test = regx.exec(str);
+// }
+
+function getDelayDay(number,startDate) {
+
 }
+
+console.log(getDelayDay(10,new Date(2019,8,30)));
