@@ -5,7 +5,7 @@
 * √ 4.es6装饰器的编写(让某个方法只执行一次)      使用高阶函数实现
 * √ 5.css裁剪图片                                clip-path，border-radius
 * √ 6.css动画                                    @keyframes定义动画，animation引用动画；transition
-* 7.正则表达式（邮箱正则、提取字符串中的单引号和双引号）
+* √7.正则表达式（邮箱正则、提取字符串中的单引号和双引号）
 * √ 8.发布订阅模式的实现、单例模式的实现
 * √ 9.如何实现一根0.3px的细线                    line-gradient和transform
 * √ 10.媒体查询表达式的使用                      @media screen and (min-width:768px) and (max-width:1366px){}

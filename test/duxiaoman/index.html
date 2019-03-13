@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        html{
+            height: 100%;
+        }
+        body {
+            display: flex;
+            align-items: stretch;
+            height: 100%;
+        }
+        .item{
+            flex-grow: 1;
+        }
+    </style>
+</head>
+<body>
+<div class="item">
+    <div>readonly</div>
+    <button readonly>aa</button>
+    <input type="text" readonly/>
+    <input type="radio" readonly/>
+    <input type="checkbox" readonly/>
+    <textarea readonly>aa</textarea>
+    <select readonly><option>aaa</option></select>
+</div>
+<div class="item">
+    <div>disabled</div>
+    <button disabled>aa</button>
+    <input type="text" disabled/>
+    <input type="radio" disabled/>
+    <input type="checkbox" disabled/>
+    <textarea disabled>aa</textarea>
+    <select disabled><option>aaa</option></select>
+</div>
+</body>
+</html>
