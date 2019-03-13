@@ -68,14 +68,14 @@ res();
 res();
 res();*/
 
-// var str = 'xx\'xx\'yyy"xxx"xx"xxx\'';
-// // var regx = /('[^']*')|("[^"]*")/g;
+var str = 'xx\'xx\'yyy"xxx"xx"xxx\'';
+var regx = /('[^']*')|("[^"]*")/g;
 // var regx = /(')|(")/g;
-// var test = regx.exec(str);
-// while (test){
-//     console.log(test);
-//     test = regx.exec(str);
-// }
+var test = regx.exec(str);
+while (test){
+    console.log(test);
+    test = regx.exec(str);
+}
 
 var holadays = ['2019-04-05', '2019-04-06','2019-09-29','2019-10-01','2019-10-02','2019-10-03','2019-10-04','2019-10-05',
     '2019-10-06','2019-10-07'];
@@ -115,4 +115,4 @@ function getDelayDay(number, startDate) {
     return new Date(endDate + holadayCount * oneDay);
 }
 
-console.log(getDelayDay(18, new Date(2019, 8, 25)));
+// console.log(getDelayDay(18, new Date(2019, 8, 25)));
