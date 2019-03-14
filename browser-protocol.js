@@ -263,7 +263,7 @@ socket.addEventListener("error", function(event) {
 *   是一种网站应用程式的安全漏洞攻击，是代码注入的一种。它允许恶意使用者将程式码注入到网页上，其他用户在观看网页时就会受到影响
 *   如何攻击: 通过修改 HTML 节点或者执行 JS 代码来攻击网站
 *             eg: 通过 URL 获取某些参数
-*                 <!-- http://www.domain.com?name=<script>alert(1)</script> -->
+*                 <!-- http://www.domain.com?name=<script>alert(1)</script> -->/
                   <div>{{name}}</div>
 *   防御：转义输入输出内容，对引号，尖括号，斜杠进行转义；对于显示富文本来说，不能通过上面的办法来转义所有字符，因为这样会把需要的
           格式也过滤掉,这种情况通常采用白名单过滤的办法.
@@ -279,7 +279,7 @@ socket.addEventListener("error", function(event) {
 *    防御：get请求不对数据进行修改
 *          不让第三方网站访问到用户cookie
 *          阻止第三方网站请求接口
-*          请求时附带验证码或token
+ N` OKQ *          请求时附带验证码或token
 * 密码安全:
 *     对于密码存储来说，必然是不能明文存储在数据库中的，否则一旦数据库泄露，会对用户造成很大的损失。并且不建议只对密码单纯通过加密算法加密，因为存在彩虹表的关系。
 *        eg:通常需要对密码加盐，然后进行几次不同加密算法的加密:
