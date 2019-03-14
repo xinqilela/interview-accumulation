@@ -60,16 +60,25 @@ Formatting context:
  是 W3C CSS2.1 规范中的一个概念。它是页面中的一块渲染区域，并且有一套渲染规则，它决定了其子元素将如何定位，以及和其他元素的关系和相互作用。
  最常见的 Formatting context 有 Block fomatting context (简称BFC)和 Inline formatting context (简称IFC)。
  BFC: "块级格式化上下文"。
-     它是一个独立的渲染区域，只有Block-level box参与， 它规定了内部的Block-level Box如何布局，并且与这个区域外部毫不相干。
+     https://developer.mozilla.org/zh-CN/docs/Web/Guide/CSS/Block_formatting_context
+     https://juejin.im/post/5909db2fda2f60005d2093db#heading-0
+     它是一个独立的渲染区域，只有Block box参与， 它规定了内部的Block Box如何布局，并且与这个区域外部毫不相干。
      如何生成：满足一下之一即可
          根元素
          float的值不为none
          overflow的值不为visible
-         display的值为inline-block、table-cell、table-caption
+         display的值为inline-block、table-cell、table-caption、flow-root
          position的值为absolute或fixed
+     布局规则:
+       内部的box会在垂直方向上逐个放置
+       box垂直方向的距离由margin决定，属于同一个BFC的两个相邻的box的margin会发生重叠
+       每个元素的margin box 的左边，与包含快的左边相接触，即使存在浮动也是如此
+       BFC区域不会与float box重叠
+       BFC级是页面上的一个个里的容器，容器里面的子元素不会影响到外面的元素
+       计算BFC的高度时，浮动元素也参与计算
      应用：
-       防止margin重叠　　　
-       清除内部浮动
+       防止margin重叠，外边距折叠（Margin collapsing）也只会发生在属于同一BFC的块级元素之间　　　
+       浮动定位和清除浮动时只会应用于同一个BFC内的元素。浮动不会影响其它BFC中元素的布局，而清除浮动只能清除同一BFC中在它前面的元素的浮动。
        自适应多兰布局
 */
 

@@ -67,12 +67,17 @@ https://imweb.io/topic/55e3ba46771670e207a16bc8
 
 /*
 https://juejin.im/post/59d489156fb9a00a571d6509
+https://juejin.im/entry/59e1d31f51882578c3411c77
 * 浏览器的渲染过程?
-  1.解析 HTML 标记并构建 DOM 树。
-  2.解析 CSS 并构建 CSSOM 树。
-  3.将 DOM 与 CSSOM 合并成一个渲染树。
-  4.根据渲染树来布局，以计算每个节点的几何信息。
-  5.调用 GPU 绘制，合成图层，显示在屏幕上。
+    1.解析 HTML 标记并构建 DOM 树。
+    2.解析 CSS 并构建 CSSOM 树。
+    3.将 DOM 与 CSSOM 合并成一个渲染树。
+    4.根据渲染树来布局，以计算每个节点的几何信息。
+    5.调用 GPU 绘制，合成图层，显示在屏幕上。
+  从流程我们可以看出来：
+    1.DOM解析和CSS解析是两个并行的进程，所以这也解释了为什么CSS加载不会阻塞DOM的解析。
+    2.由于Render Tree是依赖于DOM Tree和CSSOM Tree的，所以必须等待到CSSOM Tree构建完成，也就是CSS资源加载完成后，才开始渲染。因此，CSS加载是会阻塞Dom的渲染的。
+    3.由于js可能会操作之前的Dom节点和css样式，因此浏览器会维持html中css和js的顺序。因此，样式表会在后面的js执行前先加载执行完毕。所以css会阻塞后面js的执行。
 * */
 
 /*

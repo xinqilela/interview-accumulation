@@ -60,12 +60,12 @@ function MyPromise(executor){
     }
 }
 
-// 标准是没有catch方法的，实现了then，就实现了catch
-// then/catch 均要返回一个新的Promise实例
-
+// 注册Promise状态确定后的回调，then方法会返回一个Promise
+// 我们需要在then里面执行onResolved或者onRejected，并根据返回值来确定promise2的结果，并且，如果onResolved/onRejected返回的是一个Promise，promise2将直接取
+// 这个Promise的结果
 MyPromise.prototype.then = function(onResolved, onRejected){
     var that = this
-    var promise2
+    var promise2=null;
 
     // 值穿透
     onResolved = typeof onResolved === 'function' ? onResolved : function(v){ return v }
@@ -98,6 +98,9 @@ MyPromise.prototype.then = function(onResolved, onRejected){
         })
     }
 
+    // 如果当前的Promise还处于pending状态，我们并不能确定调用onResolved还是onRejected，
+    // 只能等到Promise的状态确定后，才能确实如何处理。
+    // 所以我们需要把我们的两种情况的处理逻辑做为callback放入promise1的回调数组里
     if(that.status === 'pending'){
         return promise2 = new MyPromise(function(resolve, reject){
             self.onResolvedCallback.push(function(reason){
