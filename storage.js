@@ -1,7 +1,9 @@
 /*
 https://juejin.im/post/5b18fd93f265da6e1b5548e0#heading-9
+https://www.cnblogs.com/cencenyue/p/7604651.html
 * 1.cookie:
 *   https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Cookies
+*   https://segmentfault.com/a/1190000004556040
 *   是服务器发送到用户浏览器并保存在本地的一小块数据,会在浏览器下次向同一服务器再发起请求时被携带并发送到服务器上。
 *   作用：
 *      (1)会话状态管理（如用户登录状态、购物车、游戏分数或其它需要记录的信息）

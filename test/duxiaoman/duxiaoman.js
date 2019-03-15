@@ -66,10 +66,16 @@
 *                               [a1  ,a2×,  a3×]  3
 *       然后对让每组跑的最快的马进行比较，找出跑的最快的三匹马。 1
 *   (3)剩余的马再比较一次即可找出。                              1
-* 7.cookie,localStorage,sessionStorage?
-*   cookie:
-*   能否跨域?
-*   如何实现在天猫登录后淘宝也会登录?
+* 7.存储相关:
+*   (1)cookie: 可以跨二级域名来访问(需要在创建cookie时设置domain为二级域名)
+*   (2)localstorage && sessionstorage:
+*      不同浏览器无法共享localStorage和sessionStorage中的信息,同一浏览器的相同域名和端口的不同页面间可以共享相同的 localStorage，
+*      但是不同页面间无法共享sessionStorage的信息。
+*      注：页面仅指顶级窗口，如果一个页面包含多个iframe且他们属于同源页面，那么他们之间是可以共享sessionStorage的。
+*      localstorage如何跨域?
+*         采用的是postMessage和iframe相结合的方法。
+*   (3)如何实现在天猫登录后淘宝也会登录?  https://cloud.tencent.com/developer/article/1166255
+*      单点登录(SSO)
 * 8.为什么https可以实现加密传输?
 *   https://blog.csdn.net/jasonjwl/article/details/50985271
 *   (1)HTTP是应用层协议，位于HTTP协议之下是传输协议TCP。TCP负责传输，HTTP则定义了数据如何进行包装。HTTPS是Http的安全升级版,其实就是在HTTP和TCP中间加了一层加密层TSL/SSL。
@@ -106,10 +112,37 @@
 *    如果一个HTTP消息（请求消息或应答消息）的Transfer-Encoding消息头的值为chunked，那么，消息体由数量未定的块组成，并以最后一个大小为0的块为结束。每一个非空的块
 *    都以该块包含数据的字节数（字节数以十六进制表示）开始，跟随一个CRLF （回车及换行），然后是数据本身，最后块CRLF结束。
 * 12.发布订阅模式和观察者模式的区别?
-* 13.类型转换?++运算符?+=运算符?
+*    观察者模式:
+*      Subject 是一个主题，Observer 是一个观察者。观察者可以订阅主题，主题发生变化会通知观察者。
+*    发布订阅模式:
+*      与观察者模式相比，发布订阅模式中间多了一层处理机制（调度中心），用于解耦发布者和订阅者之间的关联。【js事件】
+*      调度中心一方面从发布者接收事件，另一方面向订阅者发布事件，订阅者需要从调度中心订阅事件。
+* 13.类型转换?(非数值->数值)
+*    (1)Number()->用于任何数据类型到数值的转换
+*      注：undefined->NAN；null->0；
+*          若为字符串:
+*            若字符串只包含数字，则将其转为十进制数值（忽略前面的0）
+*            若字符串包含有效的浮点格式，则将其转为对应的浮点数值
+*            若字符串中包含有效的十六进制，如0xf,则转换为相同的十进制数值
+*            ''->0
+*            若字符串包含其他字符，则转为NAN
+*          若为对象:
+*            调用valueOf后按上述规则转换，若返回结果为NaN,则调用toString进行转换
+*    (2)parseInt()----|把字符串转为数值：忽略字符串前面的空格，直到找到第一个非空字符，若他不是数字或者负号，则返回NAN,若找到了第一个数字字符，会继续查找直到找到
+*       第一个非数字字符，就会忽略后面的字符。以0x开头且后跟数字字符，会把他当做十六进制数；以0开头且后跟数字字符，则把它当做八进制进行解析;
+*    (3)parseFloat()--|把字符串转为数值：也是从第一个字符开始解析每个字符，一致解析到字符串末尾，或者遇到的一个无效的浮点数数字位置；始终忽略前导0
+* 14.相等操作符?
+*    如果有一个操作数是布尔值,则在比较前将其转换为数值(false->0,true->1);
+*    如果有一个操作数是字符串，另一个是数值，则在比较前先将字符串转换为数值;
+*    如果有一个操作数是对象，另一个操作数不是，则调用对象的valueOf方法，用得到的基本类型的值进行比较;
+*    注:
+*      null和undefined相等
+*      比较前不能将null或undefined转换为其他任何值
+*      只要有一个操作数是NAN,则相等操作返回false,不相等操作返回true
+*      若2个操作数都是对象，则比较他们是不是一个对象(引用是否相等)
 * */
 
-//this的指向
+//this的指向: 匿名函数的执行环境具有全局性
 /*
 var obj = {
   name:'aa',
@@ -123,6 +156,8 @@ var obj = {
   }
 };
 obj.sayName();*/
+
+/*
 //类型转换
 console.log(null==undefined);   //true
 var str = '123ab';
@@ -130,3 +165,40 @@ var str = '123ab';
 // console.log(tmp);       //NaN
 str += 1;
 console.log(str);          //123ab1
+*/
+
+//观察者模式
+/*class Subject {
+    constructor(){
+        //订阅主题的观察者
+        this.subs=[];
+    }
+    subscribe(sub){
+        this.subs.push(sub);
+    }
+    unsubscribe(sub){
+        var index = this.subs.indexOf(sub);
+        index>-1&&this.subs.splice(index,1);
+    }
+    fire(){
+        this.subs.forEach((item)=>{
+            this.subs.forEach(sub=>sub.notify);
+        });
+    }
+}
+class Observer{
+    constructor(data){
+        this.data=data;
+    }
+    notify(){
+        console.log(this.data);
+    }
+}
+
+let subject = new Subject();
+let ob1 = new Observer('hello');
+let ob2 = new Observer('world');
+subject.subscribe(ob1);
+subject.subscribe(ob2);
+subject.fire();*/
+

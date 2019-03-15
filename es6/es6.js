@@ -25,6 +25,7 @@ promise:异步编程的一种解决方案。
      通过Promise.prototype.then和Promise.prototype.catch方法将观察者方法注册到被观察者Promise对象中，同时返回一个新的Promise对象，以便可以链式调用。
 * */
 
+//https://github.com/xieranmaya/blog/issues/3
 function MyPromise(executor){
     var that = this
     this.status = 'pending' // 当前状态
