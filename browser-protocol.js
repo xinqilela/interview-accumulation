@@ -264,7 +264,10 @@ socket.addEventListener("error", function(event) {
 
 /*
 * 安全问题：
+* https://tech.meituan.com/2018/09/27/fe-security.html
+* https://tech.meituan.com/2018/10/11/fe-security-csrf.html
 * XSS攻击（跨站脚本）：
+*   存储型、反射型、DOM型
 *   是一种网站应用程式的安全漏洞攻击，是代码注入的一种。它允许恶意使用者将程式码注入到网页上，其他用户在观看网页时就会受到影响
 *   如何攻击: 通过修改 HTML 节点或者执行 JS 代码来攻击网站
 *             eg: 通过 URL 获取某些参数
