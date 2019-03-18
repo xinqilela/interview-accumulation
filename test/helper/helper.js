@@ -118,3 +118,18 @@ Function.prototype.bindFunc = function (thisArg) {
 if (cat.say() == 'I am white cat' && cat instanceof Cat && cat instanceof Animal) {
     console.log('success');
 }*/
+
+function repeat(wait, text) {
+    var count = 1;
+    console.log(text);
+    var interval = setInterval(() => {
+        if (count >= 3) {
+            clearInterval(interval);
+            return;
+        }
+        console.log(text);
+        count++;
+    }, wait);
+}
+
+repeat(3000, 'hello');
