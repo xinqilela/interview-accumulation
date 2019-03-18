@@ -50,7 +50,14 @@
 *        在每次渲染中都会创建一个新的函数实例。因此，React 需要清理旧的 ref 并且设置新的。通过将 ref 的回调函数定义成
 *        类的绑定函数的方式可以避免上述问题。
 *    10.react生命周期钩子：见下文
-* */
+*    11.详述react的forceUpdate
+*       默认情况下，当组件的 state 或 props 改变时，组件将重新渲染。 如果你的 render() 方法依赖于一些其他数据，你可以告诉 React
+ *      组件需要通过调用 forceUpdate() 重新渲染。
+ *      调用 forceUpdate() 会导致组件跳过 shouldComponentUpdate() ，直接调用 render()。 这将触发子组件的正常生命周期方法，包括
+ *      每个子组件的 shouldComponentUpdate() 方法。
+ *      forceUpdate就是重新render。有些变量不在state上，但是你又想达到这个变量更新的时候，刷新render；或者state里的某个变量层次
+ *      太深，更新的时候没有自动触发render。这些时候都可以手动调用forceUpdate自动触发render。
+** */
 
 /*
 * react和vue对比：
