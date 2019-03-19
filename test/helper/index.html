@@ -82,5 +82,29 @@
 </div>-->
 <input type="text"/>
 <p></p>
+<script>
+    var p = document.querySelector('p');
+    var input = document.querySelector('input');
+    var obj = {
+        value: 'aaa'
+    };
+    input.value = obj.value;
+    p.innerHTML = obj.value;
+    Object.defineProperty(obj, 'value', {
+        enumerable: true,
+        configurable: true,
+        get: function () {
+            return obj.value;
+        },
+        set: function (val) {
+            input.value = val;
+            p.innerHTML = val;
+            obj.value = val;
+        }
+    });
+    input.addEventListener('keyup', function (e) {
+        obj.value = e.target.value;
+    }, false);
+</script>
 </body>
 </html>

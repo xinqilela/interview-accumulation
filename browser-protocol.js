@@ -266,36 +266,90 @@ socket.addEventListener("error", function(event) {
 * 安全问题：
 * https://tech.meituan.com/2018/09/27/fe-security.html
 * https://tech.meituan.com/2018/10/11/fe-security-csrf.html
-* XSS攻击（跨站脚本）：
-*   存储型、反射型、DOM型
-*   是一种网站应用程式的安全漏洞攻击，是代码注入的一种。它允许恶意使用者将程式码注入到网页上，其他用户在观看网页时就会受到影响
-*   如何攻击: 通过修改 HTML 节点或者执行 JS 代码来攻击网站
-*             eg: 通过 URL 获取某些参数
-*                 <!-- http://www.domain.com?name=<script>alert(1)</script> -->
-                  <div>{{name}}</div>
-*   防御：转义输入输出内容，对引号，尖括号，斜杠进行转义；对于显示富文本来说，不能通过上面的办法来转义所有字符，因为这样会把需要的
-          格式也过滤掉,这种情况通常采用白名单过滤的办法.
-    CSP：
-*     内容安全策略 (CSP) 是一个额外的安全层，用于检测并削弱某些特定类型的攻击，包括跨站脚本 (XSS) 和数据注入攻击等。
-*     可以通过 CSP 来尽量减少 XSS 攻击。CSP 本质上也是建立白名单，规定了浏览器只能够执行特定来源的代码。
-*     Content-Security-Policy: default-src ‘self’ 只能加载本站资源.
-* CSRF攻击（跨站请求伪造）：
-*    CSRF 就是利用用户的登录态发起恶意请求。
-*    如何攻击:
-*              eg: 假设网站中有一个通过 Get 请求提交用户评论的接口，那么攻击者就可以在钓鱼网站中加入一个图片，图片的地址就是评论接口
-*                  <img src="http://www.domain.com/xxx?comment='attack'"/>
-*    防御：get请求不对数据进行修改
-*          不让第三方网站访问到用户cookie
-*          阻止第三方网站请求接口
-*          请求时附带验证码或token
-* 密码安全:
-*     对于密码存储来说，必然是不能明文存储在数据库中的，否则一旦数据库泄露，会对用户造成很大的损失。并且不建议只对密码单纯通过加密算法加密，因为存在彩虹表的关系。
-*        eg:通常需要对密码加盐，然后进行几次不同加密算法的加密:
-*           加盐也就是给原密码添加字符串，增加原密码长度
-            sha256(sha1(md5(salt + password + slat)))
+* 1.XSS攻击（跨站脚本）：
+*   (1)是一种代码注入攻击。攻击者通过在目标网站上注入恶意脚本，使之在用户的浏览器上运行。利用这些恶意脚本，攻击者可获取用户的敏感信息如 Cookie、SessionID 等，进而危害数据安全。
+*   (2)分类：
+*      存储型：
+*        step: 攻击者将恶意代码提交至服务器数据库中，用户打开目标网站时，网站服务端将恶意代码从数据库中去除，拼接在html中返回给浏览器，浏览器收到响应解析执行，恶意代码也被执行，
+*              恶意代码窃取用户数据发送到攻击者的网站，调用目标网站接口执行攻击操作。
+*          eg: 论坛发帖、商品评论、用户私信
+*      反射型：
+*        step: 攻击者构造出特殊url,其中包含恶意代码，用户打开该url时，网站服务端将恶意代码从url中取出，拼接在html中返回给浏览器，浏览器收到响应解析执行，恶意代码也被执行，
+*              恶意代码窃取用户数据发送到攻击者的网站，调用目标网站接口执行攻击操作。
+*          eg: 常见于url传递参数的功能，如网站搜索、跳转
+*      DOM型：
+*        step: 攻击者构造出恶意url,其中包含恶意代码，用户打开该url,用户浏览器接收到响应后解析之星，前端js取出url中的恶意代码并执行，恶意代码窃取用户数据发送到攻击者的网站，
+*              调用目标网站接口执行攻击操作。
+*      注：
+*        反射型 XSS 跟存储型 XSS 的区别是：存储型 XSS 的恶意代码存在数据库里，反射型 XSS 的恶意代码存在 URL 里。
+*        DOM 型 XSS 跟前两种 XSS 的区别：DOM 型 XSS 攻击中，取出和执行恶意代码由浏览器端完成，属于前端 JavaScript 自身的安全漏洞，而其他两种 XSS 都属于服务端的安全漏洞。
+*   (3)防御：
+*         预防存储型&&反射型XSS 攻击：
+*           改成纯前端渲染，把代码和数据分隔开；对 HTML 做充分转义（对& < > " ' /进行转义）；
+*         预防 DOM 型 XSS 攻击：
+*           在使用 .innerHTML、.outerHTML、document.write() 时要特别小心，不要把不可信的数据作为 HTML 插到页面上，而应尽量使用 .textContent、.setAttribute() 等；
+*           DOM 中的内联事件监听器，如 location、onclick、onerror、onload、onmouseover 等，<a> 标签的 href 属性，JavaScript 的 eval()、setTimeout()、setInterval() 等，
+*           都能把字符串作为代码运行。如果不可信的数据拼接到字符串中传递给这些 API，很容易产生安全隐患，请务必避免。
+*         对于显示富文本来说，不能通过上面的办法来转义所有字符，因为这样会把需要的格式也过滤掉,这种情况通常采用白名单过滤的办法.
+          CSP：
+*           内容安全策略 (CSP) 是一个额外的安全层，用于检测并削弱某些特定类型的攻击，包括跨站脚本 (XSS) 和数据注入攻击等。
+*           可以通过 CSP 来尽量减少 XSS 攻击。CSP 本质上也是建立白名单，规定了浏览器只能够执行特定来源的代码。
+*           Content-Security-Policy: default-src ‘self’ 只能加载本站资源.
+* 2.CSRF攻击（跨站请求伪造）：
+*    (1)攻击者诱导受害者进入第三方网站，在第三方网站中，向被攻击网站发送跨站请求。利用受害者在被攻击网站已经获取的注册凭证，绕过后台的用户验证，达到冒充用户对被攻击的网站执行某项操作的目的
+*    (2)分类：
+*       GET类型的CSRF：
+*         受害者访问含有这个img的页面后，浏览器会自动向http://bank.example/withdraw?account=xiaoming&amount=10000&for=hacker发出一次HTTP请求。bank.example就会收到包含受害者登录信息的
+*         一次跨域请求。
+*       POST类型的CSRF：
+*         通常使用的是一个自动提交的表单,访问该页面后，表单会自动提交，相当于模拟用户完成了一次POST操作。
+*         <form action="http://bank.example/withdraw" method=POST>
+            <input type="hidden" name="account" value="xiaoming" />
+            <input type="hidden" name="amount" value="10000" />
+            <input type="hidden" name="for" value="hacker" />
+          </form>
+          <script> document.forms[0].submit(); </script>
+*       链接类型的CSRF：
+*         比起其他两种用户打开页面就中招的情况，这种需要用户点击链接才会触发。这种类型通常是在论坛中发布的图片中嵌入恶意链接，或者以广告的形式诱导用户中招，攻击者通常会以比较夸张的
+*         词语诱骗用户点击。
+*         <a href="http://test.com/csrf/withdraw.php?amount=1000&for=hacker" taget="_blank"> 重磅消息！！<a/>
+*         由于之前用户登录了信任的网站A，并且保存登录状态，只要用户主动访问上面的这个PHP页面，则表示攻击成功
+*      (3)防御：
+*         阻止不明外域的访问：
+*           同源检测：（同源验证是一个相对简单的防范方法，能够防范绝大多数的CSRF攻击，但并不是万无一失的）
+*             origin字段：为请求的域名(不包含路径)
+*             referer字段：为请求的来源地址，对于ajax请求referer为发起请求的来源地址，对于页面跳转，referer为打开页面历史记录的前一个页面地址
+*             若为外域访问，直接阻止即可，但是当一个请求是页面请求（比如网站的主页），而来源是搜索引擎的链接（例如百度的搜索结果），也会被当成疑似CSRF攻击，所以在判断的时候需要过滤掉
+*             页面请求（Accept: text/html；Method: GET），但相应的，页面请求就暴露在了CSRF的攻击范围之中。
+*           Samesite Cookie：（Samesite不支持子域，在topic.a.com下的Cookie，并不能使用a.com下种植的SamesiteCookie。这就导致了当我们网站有多个
+*                              子域名时，不能使用SamesiteCookie在主域名存储用户登录信息。每个子域名都需要用户重新登录一次）
+*             Set-Cookie响应头的Samesite属性，用来表明这个Cookie为同站cookie,同站cookie只能作为第一方cookie,不能作为第三方cookie.
+*             Set-Cookie:foo=1;Samesite=Strict为严格模式，表明该Cookie在任何情况下都不能作为第三方Cookie
+*             Set-Cookie:foo=1;Samesite=Lax为宽松模式，若请求为get请求且改变了当前页面或者打开了新页面，则这个Cookie可以作为第三方Cookie
+*         提交时要求附加本域才能获取的信息：
+*           CSRF Token：（要求所有的用户请求都携带一个CSRF攻击者无法获取到的Token。服务器通过校验请求是否携带正确的Token，来把正常的请求和攻击的请求区分开，也可以防范CSRF的攻击）
+*             step：将csrf token输出到页面中；
+*                   【用户打开页面时，服务器要给这个用户生成一个token，该token通过加密算法进行加密，该token保存在服务器的session中，之后每次加载页面时，使用js遍历整个DOM树，对于所有
+*                   a标签和form标签尾部加入token,这样可以解决大部分的请求，但是对于在页面加载之后动态生成的HTML代码，这种方法就没有作用，还需要在编码时手动添加Token。】
+*                   页面提交的请求携带这个token；
+*                   服务器验证token是否正确；
+*                   【当用户从客户端得到了token,再次提交给服务器时，服务器需要对token进行验证，先解密token,对比加密字符串和时间戳，若加密字符串一致且时间未过期，则token有效】
+*             注：此方法的实现比较复杂，需要给每一个页面都写入Token（前端无法使用纯静态页面），每一个Form及Ajax请求都携带这个Token，后端对每一个接口都进行校验，并保证页面Token及
+*                 请求Token一致，使得这个防护策略不能在通用的拦截上统一拦截处理，而需要每一个页面和接口都添加对应的输出和校验，工作量巨大。
+*           双重Cookie验证：（利用csrf不能获取到用户的cookie的特点，可以要求ajax和表单请求都携带一个Cookie中的值）
+*             step：用户访问网站时，向请求域名注入一个Cookie；
+*                   在向后端发起请求时，取出cookie并添加到请求参数中；
+*                   后端验证请求参数中的cookie和服务器设置的是否一致，不一致则拒绝。
+* 3.密码安全:
+*   对于密码存储来说，必然是不能明文存储在数据库中的，否则一旦数据库泄露，会对用户造成很大的损失。并且不建议只对密码单纯通过加密算法加密，因为存在彩虹表的关系。
+*   eg:通常需要对密码加盐，然后进行几次不同加密算法的加密:
+*      加盐也就是给原密码添加字符串，增加原密码长度
+       sha256(sha1(md5(salt + password + slat)))
 * */
 
 /*
+https://juejin.im/post/5c0ce870f265da61171c8c66
+https://juejin.im/post/5b0274ac6fb9a07aaa118f49
 Http && Https:
   Https: 是一种通过计算机网络进行安全通信的传输协议。HTTPS经由HTTP进行通信，但利用SSL/TLS来加密数据包。HTTPS开发的主要目的，是提供对网站服务器的身份认证，
          保护交换数据的隐私与完整性。HTTPS连接经常用于万维网上的交易支付和企业信息系统中敏感信息的传输。

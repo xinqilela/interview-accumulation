@@ -119,7 +119,7 @@ if (cat.say() == 'I am white cat' && cat instanceof Cat && cat instanceof Animal
     console.log('success');
 }*/
 
-function repeat(wait, text) {
+/*function repeat(wait, text) {
     var count = 1;
     console.log(text);
     var interval = setInterval(() => {
@@ -132,4 +132,12 @@ function repeat(wait, text) {
     }, wait);
 }
 
-repeat(3000, 'hello');
+repeat(3000, 'hello');*/
+
+var arr = [{a: 1}, {a: 2}, {a: 3}];
+var res = arr.reduce((pre, item, index, array) => {
+    item.a = item.a * 2;
+    pre.push(item);
+    return pre;
+}, []);
+console.log(res);
