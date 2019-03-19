@@ -1,5 +1,7 @@
 /*
 * 1.js bridge
+*   简单来讲，主要是给js提供调用Native功能的接口，让混合开发的前端部分可以方便的使用地址位置、摄像头、支付等Native功能，实际上，JSBridge是Native和非Native之间的桥梁，他的核心是构建
+*   Native和非Native间的消息通信的通道，而且是双向通信的通道。
 * 2.https的安全机制,中间人攻击
 * 3.react native和h5的区别
 * 4.移动端适配
