@@ -47,7 +47,7 @@ Node.js采用v8作为js的解析引擎，在IO处理方面使用了自己设计�
   5.check阶段：执行setImmediate回调
   6.close callbacks阶段：执行close事件的回调
 总结：
-  1.
+  1.event loop 的每个阶段都有一个任务队列
   2.
   3.
 * */
