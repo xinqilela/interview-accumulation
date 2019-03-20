@@ -276,8 +276,8 @@ const c = 'Hello Howard';
 
 /*
 * 什么是函数柯里化？以及说一下JS的API有哪些应用到了函数柯里化的实现？
-* 柯里化是一种将使用多个参数的一个函数转换成一系列使用一个参数的函数的技术。
-* bind方法。
+* (1)柯里化是一种把接受多个参数的函数变换成接受一个单一参数（最初函数的第一个参数）的函数，最终返回接受余下的参数而且返回结果的新函数。
+* (2)bind方法。
 * */
 function curry(fn) {
     var args = Array.prototype.slice.call(arguments,1);

@@ -12,6 +12,7 @@ http://www.ruanyifeng.com/blog/2016/04/same-origin-policy.html
 
 /*
 CORS: 是一个W3C标准，全称是"跨域资源共享"，它允许浏览器向跨源服务器发出XMLHttpRequest请求，从而克服跨域问题，它需要浏览器和服务器的同时支持。
+   注：浏览器一旦发现AJAX请求跨源，就会自动添加一些附加的头信息，有时还会多出一次附加的请求，但用户不会有感觉。
    解决方案：
      浏览器将CORS请求分成两类：简单请求（simple request）和非简单请求（not-so-simple request）。
          对于简单请求，浏览器直接发出CORS请求，在头信息之中，增加一个Origin字段，说明该请求来自哪个源。服务器根据这个值，决定是否同意这次请求。
