@@ -34,17 +34,18 @@ https://www.cnblogs.com/cencenyue/p/7604651.html
 *     (2)localStorage在浏览器的隐私模式下面是不可读取的
 *     (3)localStorage本质上是对字符串的读取，如果存储内容多的话会消耗内存空间，会导致页面变卡
 * 3.sessionStorage：
-*   存储在 sessionStorage 里面的数据在页面会话结束时会被清除。页面会话在浏览器打开期间一直保持，并且重新加载或恢复页面仍会保持原来的页面会话。在新标签或窗口打
-*   开一个页面时会在顶级浏览上下文中初始化一个新的会话。
+*   存储在 sessionStorage 里面的数据在页面会话结束时会被清除。页面会话在浏览器打开期间一直保持，并且重新加载或恢复页面仍会
+*   保持原来的页面会话。在新标签或窗口打开一个页面时会在顶级浏览上下文中初始化一个新的会话。
 *   用法:
 *     sessionStorage.setItem('key', 'value');
 *     let data = sessionStorage.getItem('key');
 *     sessionStorage.removeItem('key');
 *     sessionStorage.clear();
 *  4.indexDB：HTML5规范里新出现的浏览器里内置的数据库
-*    提供了类似数据库风格的数据存储和使用方式。但IndexedDB里的数据是永久保存，适合于储存大量结构化数据，有些数据本应该存在服务器，但是通过indexedDB，可以减轻
-*    服务器的大量负担，实现本地读取修改使用，以对象的形式存储，每个对象都有一个key值索引。IndexedDB里的操作都是事务性的。一种对象存储在一个object store里，
-*    object store就相当于关系数据库里的表。IndexedDB可以有很多object store，object store里可以有很多对象。
+*    提供了类似数据库风格的数据存储和使用方式。但IndexedDB里的数据是永久保存，适合于储存大量结构化数据，有些数据本应该存在服务器，
+*    但是通过indexedDB，可以减轻服务器的大量负担，实现本地读取修改使用，以对象的形式存储，每个对象都有一个key值索引。IndexedDB里
+*    的操作都是事务性的。一种对象存储在一个object store里，object store就相当于关系数据库里的表。IndexedDB可以有很多object store，
+*    object store里可以有很多对象。
 *    优点：
 *      可以实现离线访问
 *      数据储存量无限大，Chrome规定了最多只占硬盘可用空间的1/3，可以储存结构化数据带来的好处是可以节省服务器的开支
@@ -52,11 +53,13 @@ https://www.cnblogs.com/cencenyue/p/7604651.html
 *      兼容性问题
 *      API类似SQL比较复杂，操作大量数据的时候，可能存在性能上的消耗。
 *      用户在清除浏览器缓存时，可能会清除IndexedDB中相关的数据。
-*      同源策略，部分浏览器如Safari手机版隐私模式在访问IndexedDB时，可能会出现由于没有权限而导致的异常（LocalStorage也会），需要进行异常处理。
+*      同源策略，部分浏览器如Safari手机版隐私模式在访问IndexedDB时，可能会出现由于没有权限而导致的异常（LocalStorage也会），
+*      需要进行异常处理。
 *  5.ServiceWorker：
-*      本质上充当Web应用程序与浏览器之间的代理服务器，也可以在网络可用时作为浏览器和网络间的代理。它们旨在（除其他之外）使得能够创建有效的离线体验，拦截网络请求
-*      并基于网络是否可用以及更新的资源是否驻留在服务器上来采取适当的动作。他们还允许访问推送通知和后台同步API。
-*      Service worker运行在worker上下文，因此它不能访问DOM。相对于驱动应用的主JavaScript线程，它运行在其他线程中，所以不会造成阻塞。
+*      本质上充当Web应用程序与浏览器之间的代理服务器，也可以在网络可用时作为浏览器和网络间的代理。它们旨在（除其他之外）使得能够
+*      创建有效的离线体验，拦截网络请求并基于网络是否可用以及更新的资源是否驻留在服务器上来采取适当的动作。他们还允许访问推送通知
+*      和后台同步API。Service worker运行在worker上下文，因此它不能访问DOM。相对于驱动应用的主JavaScript线程，它运行在其他线程中，
+*      所以不会造成阻塞。
 *      注册: 使用 navigator.serviceWorker.register() 方法首次注册service worker。如果注册成功，service worker就会被下载到客户端并尝试安装或激活.
 *      生命周期: 下载、安装、激活
 * */
@@ -69,7 +72,8 @@ https://www.cnblogs.com/cencenyue/p/7604651.html
 *   (3)仅在客户端中保存，不参与和服务器的通信
 * 不同点：
 *   (1)localStorage: 存储的数据是永久性的，除非用户人为删除否则会一直存在。
-*      sessionStorage: 与存储数据的脚本所在的标签页的有效期是相同的。一旦窗口或者标签页被关闭，那么所有通过 sessionStorage 存储的数据也会被删除。
+*      sessionStorage: 与存储数据的脚本所在的标签页的有效期是相同的。一旦窗口或者标签页被关闭，那么所有通过 sessionStorage 存储
+*                      的数据也会被删除。
 *   (2)localStorage: 在同一个浏览器内，同源文档之间共享 localStorage 数据，可以互相读取、覆盖。
 *      sessionStorage: 与 localStorage 一样需要同一浏览器同源文档这一条件。不仅如此，sessionStorage 的作用域还被限定在了窗口中，
 *      只有同一浏览器、同一窗口的同源文档才能共享数据。
@@ -123,7 +127,7 @@ request.onupgradeneeded = function () {//更新版本回调
     objectStore.put({hero: "提莫", author: "Roit", isbn: 234567});
     objectStore.put({hero: "诺手", author: "Hang", isbn: 345678});
 };
-request.onsuccess = function () {//成功回调
+request.onsuccess = function (event) {//成功回调
     my.db = event.target.result || request.result;
     //IndexedDB中，使用事务来进行数据库的操作。事务有三个模式: readOnly只读、readwrite读写、versionchange数据库版本变化
     var transaction = my.db.transaction('LOL', 'readwrite');

@@ -3,8 +3,8 @@ https://juejin.im/post/5ac61da66fb9a028c71eae1b
 https://juejin.im/entry/5a2cbd51f265da430b7b2b82
 * 前端路由实现:
 * 1.hash路由
-      url 上的 hash 以 # 开头，原本是为了作为锚点，方便用户在文章导航到相应的位置。因为 hash 值的改变不会引起页面的刷新，因此可以用 hash 值来做单页面应用的路由，
-    并且当 url 的 hash 发生变化的时候，可以触发相应 hashchange 回调函数。
+      url 上的 hash 以 # 开头，原本是为了作为锚点，方便用户在文章导航到相应的位置。因为 hash 值的改变不会引起页面的刷新，
+    因此可以用 hash 值来做单页面应用的路由，并且当 url 的 hash 发生变化的时候，可以触发相应 hashchange 回调函数。
 * 2.history路由:
 *     History 路由是基于 HTML5 规范，在 HTML5 规范中提供了 history.pushState || history.replaceState 来进行路由控制。
 *     history 的改变并不会触发任何事件，这让我们无法直接去监听 history 的改变从而做出相应的改变。
@@ -18,7 +18,7 @@ https://juejin.im/entry/5a2cbd51f265da430b7b2b82
 *          针对情况3 ,在 JS 直接触发 pushState 函数，那么这时候你必须要调用视图更新函数，否则就是出现视图内容和 url 不一致的情况
 *
 * */
-/*class Routers {
+class Routers {
     constructor() {
         // 存放不同路由对应的回调函数
         this.routes = {};
@@ -85,7 +85,7 @@ Router.route('/blue',function () {
 Router.route('/green',function () {
     changeBgColor('green');
 });
-button.addEventListener('click', Router.backOff, false);*/
+button.addEventListener('click', Router.backOff, false);
 
 
 class Routers {
@@ -138,11 +138,3 @@ ul.addEventListener('click', e => {
         Router.go(e.target.getAttribute('href'));
     }
 });
-
-/*
-* hash-router:
-* */
-
-/*
-* history-router:
-* */

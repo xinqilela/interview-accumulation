@@ -48,8 +48,14 @@ Node.js采用v8作为js的解析引擎，在IO处理方面使用了自己设计�
   6.close callbacks阶段：执行close事件的回调
 总结：
   1.event loop 的每个阶段都有一个任务队列
-  2.
-  3.
+  2.当事件循环到达某个阶段，执行该阶段的任务队列，直到队列清空或达到系统上限，才会进入下一阶段
+  3.当所有阶段被顺序执行一次时，被称为一次tick
+* */
+
+/*
+* 浏览器时间循环 vs Node.js时间循环：
+  2种环境下，微任务的执行时机不同，浏览器中，微任务队列在每个宏任务执行完毕后执行，Node环境中，微任务队列在时间循环的各个阶段进行
+  注：递归的调用process.nextTick()会导致I/O starving，官方推荐使用setImmediate()
 * */
 
 /*
@@ -69,7 +75,8 @@ process.nextTick:  在当前"执行栈"的尾部----下一次Event Loop（主线
 setImmediate：在当前"任务队列"的尾部添加事件，它指定的任务总是在下一次Event Loop时执行，这与setTimeout(fn, 0)很像。
 区别：
 1.多个process.nextTick语句总是在当前"执行栈"一次执行完，多个setImmediate可能则需要多次loop才能执行完。
-2.由于process.nextTick指定的回调函数是在本次"事件循环"触发，而setImmediate指定的是在下次"事件循环"触发，所以，前者总是比后者发生得早，而且执行效率也高（因为不用检查"任务队列"）。
+2.由于process.nextTick指定的回调函数是在本次"事件循环"触发，而setImmediate指定的是在下次"事件循环"触发，所以，
+  前者总是比后者发生得早，而且执行效率也高（因为不用检查"任务队列"）。
 * */
 
 process.nextTick(function A() {
