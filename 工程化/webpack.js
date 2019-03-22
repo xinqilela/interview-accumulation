@@ -150,6 +150,10 @@ exclude	    RegExp, Array		            要从测试中排除的文件。
 *         使用loader 进行转换,通过plugins（插件）对资源进行处理，打包成符合生产环境部署的前端资源。
 *      (2)Webpack中对资源文件的处理是通过入口文件产生的依赖形成的，不会像Gulp那样，配置好路径后，该路径下所有规定的文件都会受影响。
 *    6.你配置过webpack吗？有用那些优化措施?
+*      因为webpack本身只处理js文件，所以我们要把项目中的jsx（babel-loader,react-hot-loader）、html（html-loader）、样式（style-loader,css-loader,less-loader）、
+*      图片（url-loader）、视频（url-loader）、字体（url-loader）等文件使用相应的loader进行处理转换为webpack能够处理的模块【在module.rules中配置】;
+*      使用webpack.DefinePlugin定义一些开发时用的全局常量，在开发环境下使用webpack.HotModuleReplacementPlugin开启模块热替换功能，在生产环境下分离样式文件、压缩js、
+*      把公共代码分离打包。
 *    7.babel把es6转成es5的原理?
 *      (1)babel是一个转译器，它只是把同种语言的高版本规则翻译成低版本规则，babel的转译过程也分为三个阶段：parsing、transforming、generating：
 *      (2)ES6代码输入->babylon进行解析->得到AST->plugin用babel-traverse对AST进行遍历转义->得到新的AST->用babel-generator将AST生成es代码

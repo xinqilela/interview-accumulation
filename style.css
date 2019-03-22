@@ -105,6 +105,18 @@ http://www.ruanyifeng.com/blog/2015/07/flex-examples.html
 */
 
 /*
+position布局：
+  static：指定元素的位置为文档流中的正常布局位置（top,right,bottom,left,z-index无效）
+  relative：相对于元素在正常文档流中的位置进行偏移定位（会为元素在文档流中的原本位置留下空白）
+  absolute：相对于最近的非static定位祖先元素进行偏移定位（不为元素预留空间）
+  fixed：相对于屏幕视口的位置进行偏移定位（不为元素预留空间）
+  sticky：可以被认为是相对定位和固定定位的混合，元素在跨越特定的阈值前为相对定位，之后为固定定位。
+  注：
+    若被绝对定位的元素其height（width）被设定为auto,可以同时指定top和bottom（left和right）来填充可用的垂直(水平)空间,
+    若height(width)不为auto,可以同时指定top和bottom（left和right）来实现垂直居中（水平居中）。
+*/
+
+/*
 grid布局：
   是CSS中最强大的布局系统。 这是一个二维系统，这意味着它可以同时处理列和行，不像 flexbox 那样主要是一维系统。
 你可以通过将CSS规则应用于父元素和该元素的子元素，来使用网格布局。
