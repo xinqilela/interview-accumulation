@@ -144,4 +144,5 @@ fetch也是支持跨域请求的，只不过其跨域请求做法与XHR2一样�
   no-cors:
     用于跨域请求但是服务器不带CORS响应头，也就是服务端不支持CORS；这也是fetch的特殊跨域请求方式；其对应的response type为opaque。
     该模式允许浏览器发送本次跨域请求，但是不能访问响应返回的内容，这也是其response type为opaque透明的原因。
+ 总的来说，fetch的跨域请求是使用CORS方式，需要浏览器和服务端的支持。
 */

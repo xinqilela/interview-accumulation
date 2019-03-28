@@ -143,3 +143,8 @@ var res = arr.reduce((pre, item, index, array) => {
     return pre;
 }, []);
 console.log(res);
+
+/*
+* 1.html标签的property和attribute的区别
+*
+* */
