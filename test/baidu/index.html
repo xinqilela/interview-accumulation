@@ -21,37 +21,6 @@
 </form>
 <!--<script type="text/javascript" src="baidu.js"></script>-->
 <script type="text/javascript">
-    var inputs = document.querySelectorAll('form input');
-    var msgs = document.querySelectorAll('form msg');
-    for (let i = 0; i < inputs.length; i++) {
-        inputs[i].addEventListener('input', (e) => {
-            let obj = {};
-            for (let j = 0; j < inputs.length; j++) {
-                let value = inputs[j].value;
-                if (value == '') inputs[j].nextElementSibling.innerHTML = '';
-                if (!obj[value]) {
-                    obj[value] = [j];
-                } else {
-                    obj[value].push(j);
-                }
-            }
-            for (let key in obj) {
-                let now = obj[key];
-                if (now.length > 1) {
-                    now.forEach((item, index) => {
-                        if (inputs[item].value.length < 3) {
-                            inputs[item].nextElementSibling.innerHTML = 'too short';
-                        } else {
-                            inputs[item].nextElementSibling.innerHTML = 'not unique';
-                        }
-                    });
-                } else {
-                    inputs[0].nextElementSibling.innerHTML = inputs[0].value.length < 3 ? 'too short' : 'all good';
-                }
-            }
-        }, false);
-    }
-
 </script>
 </body>
 </html>
