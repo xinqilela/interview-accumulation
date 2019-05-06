@@ -1,6 +1,6 @@
 /*
 https://juejin.im/post/5ac61da66fb9a028c71eae1b
-https://juejin.im/entry/5a2cbd51f265da430b7b2b82
+https://juejin.im/post/5b31a4f76fb9a00e90018cee
 * 前端路由实现:
 * 1.hash路由
       url 上的 hash 以 # 开头，原本是为了作为锚点，方便用户在文章导航到相应的位置。因为 hash 值的改变不会引起页面的刷新，

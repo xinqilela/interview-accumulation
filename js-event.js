@@ -55,7 +55,7 @@ https://juejin.im/post/5b29cdaa518825749d2d557a#heading-0
 * */
 
 //跨浏览器事件处理程序
-var eventUtil = {
+/*var eventUtil = {
     // 添加句柄
     addHandler: function (element, type, handler) {
         if (element.addEventListener) {
@@ -87,9 +87,9 @@ function evtFn() {
 eventUtil.addHandler(oBtn, 'click', evtFn);
 eventUtil.addHandler(oBtn, 'click', function () {
     alert('hello world2');
-});
+});*/
 // eventUtil.removeHandler(oBtn, 'click', evtFn);
-
+/*
 var s1 = document.getElementById('s1');
 var s2 = document.getElementById('s2');
 s1.addEventListener("click", function (e) {
@@ -109,6 +109,8 @@ s2.addEventListener("click", function (e) {
 //s2 冒泡事件
 //s2 捕获事件
 //s1 冒泡事件
+//点击s2,点击事件从document->html->body->s1->s2上捕获前进，发现s1上注册的捕获事件处理程序，执行s1上的捕获程序，到达s2即事件目标，
+//由于先注册的冒泡后注册的捕获，因此按顺序执行冒泡、捕获程序，然后进入冒泡阶段，发现s1上的冒泡事件处理程序因而进行执行。
 
 var btn = document.getElementById('test');
 btn.onclick = function () {
@@ -116,7 +118,7 @@ btn.onclick = function () {
 };
 btn.onclick = function () {
     alert(2);
-};
+};*/
 
 /*
 Load 事件触发代表页面中的 DOM，CSS，JS，图片已经全部加载完毕。
@@ -127,7 +129,6 @@ DOMContentLoaded 事件触发代表初始的 HTML 被完全加载和解析，不
 if(window.addEventListener){
     window.addEventListener("DOMCharacterDataModified", function(){window.location.reload();}, true);
     window.addEventListener("DOMAttributeNameChanged", function(){window.location.reload();}, true);
-    window.addEventListener("DOMCharacterDataModified", function(){window.location.reload();}, true);
     window.addEventListener("DOMElementNameChanged", function(){window.location.reload();}, true);
     window.addEventListener("DOMNodeInserted", function(){window.location.reload();}, true);
     window.addEventListener("DOMNodeInsertedIntoDocument", function(){window.location.reload();}, true);

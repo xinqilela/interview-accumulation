@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        html,body{
+            height: calc(100% - 10px);
+        }
+
+        body{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #001529;
+            color: #fff;
+        }
+
+        header,footer{
+            padding: 20px;
+            height:20vh;
+            display: flex;
+            align-items: center;
+        }
+
+        form{
+            width:100%;
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        input {
+            border-radius: 5px;
+            border: 1px solid rgb(217, 217, 217);
+            height: 22px;
+            text-indent: 10px;
+            width: calc(50% - 60px);
+            text-overflow: ellipsis;
+        }
+
+        button {
+            background: #1890ff;
+            color: #fff;
+            width: 50px;
+            height: 26px;
+            line-height: 26px;
+            border: none;
+            border-radius: 5px;
+            margin-left: 10px;
+        }
+
+        button:hover {
+            background: #40a9ff;
+            cursor: pointer;
+        }
+    </style>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<header>
+    声明：本工具用于微信订阅号文章内容解析，填入目标URL，一键将内容复制到剪贴板
+</header>
+<form method="post" action="/get_wechat_article">
+    <input name="url" type="text" placeholder="请输入目标网址"/>
+    <button type="submit">提交</button>
+</form>
+<footer>
+    联系：410282618@qq.com
+</footer>
+</body>
+</html>
+
+https://mmbiz.qpic.cn/mmbiz_png/NIDeKkXhvU3icGtLBFnIT25BfW4Q4HhNhMC9xldzgU9Z0TIUnCPadePXCRLqAUausJLd8lOQNAr8iaKyRtcBsmlA/640?wx_fmt=png
+https://mmbiz.qpic.cn/mmbiz_png/NIDeKkXhvU3icGtLBFnIT25BfW4Q4HhNhMC9xldzgU9Z0TIUnCPadePXCRLqAUausJLd8lOQNAr8iaKyRtcBsmlA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1

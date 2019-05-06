@@ -3,26 +3,8 @@ https://juejin.im/entry/58b7ad418ac24766f5609206
 */
 
 /*
-margin第一个参数设为auto并不能垂直居中
+margin为auto只能设置水平居中
 */
-.red {
-    width: 30px;
-    height: 30px;
-    background: red;
-    margin: 0px auto;
-}
-
-#content {
-    position: relative;
-    left: 50%;
-    float: left;
-}
-
-.float-div {
-    position: relative;
-    float: left;
-    right: 0%;
-}
 
 /*
 css盒模型：
@@ -56,6 +38,38 @@ css盒模型：
 */
 
 /*
+css动画：
+1.transition：让元素从一种样式逐渐改变为另一种样式时的效果。
+  实现过度效果，需要定义两项内容：把效果应该用到哪个css属性上；效果持续的时长；
+  transition-property、transition-duration、transition-delay、
+  transition-timing-function(liner,ease,ease-in,ease-out,ease-in-out)、
+  div { transition: width 2s, transform 2s ; width:200px;}
+  div:hover { width:400px; transform: rotateX(30deg);}
+2.transform：通过css转换能够对元素进行移动、缩放、旋转、拉伸、拉长。
+  transform-origin：允许你改变被转换元素的位置。
+  2D转换：translate(x,y),scale(x,y),rotate(10deg),skew(x,y),matrix()
+  3D转换：translate3d(x,y,z),scale3d(x,y,z),rotate3d(x,y,z),
+          transform-style[规定如何在 3D 空间中呈现被嵌套的元素：flat子元素不保留其3d位置,preserve-3d子元素保留其3d位置]
+          perspective[规定3d元素的透视效果：number元素距离视图的距离]
+3.animation：让元素从一种样式变为另一种样式的效果。
+  @keyframes my-name{
+   0% {background:red}
+   100% {background:green}
+   }
+   div{
+   animation: my-name 5s;
+   }
+   animation-duration、animation-timing-function、animation-delay、
+   animation-iteration-count(规定动画被播放的次数)、
+   animation-direction(是否在下一周期逆向播放：normal[一轮动画结束之后仍正向播放],alternate[逆向播放])、
+   animation-play-state(规定动画是否正在运行或暂停：running，paused)、
+   animation-fill-mode(规定对象动画时间之外的状态：none，
+                                                   forwards[动画结束之后保持最后一个属性值]，
+                                                   backwards[动画开始显示之前使用第一个属性值]，
+                                                   both[前后填充模式同时应用])
+*/
+
+/*
 Formatting context:
  是 W3C CSS2.1 规范中的一个概念。它是页面中的一块渲染区域，并且有一套渲染规则，它决定了其子元素将如何定位，以及和其他元素的关系和相互作用。
  最常见的 Formatting context 有 Block fomatting context (简称BFC)和 Inline formatting context (简称IFC)。
@@ -74,7 +88,7 @@ Formatting context:
        box垂直方向的距离由margin决定，属于同一个BFC的两个相邻的box的margin会发生重叠
        每个元素的margin box 的左边，与包含快的左边相接触，即使存在浮动也是如此
        BFC区域不会与float box重叠
-       BFC级是页面上的一个个里的容器，容器里面的子元素不会影响到外面的元素
+       BFC级是页面上的一个独立的容器，容器里面的子元素不会影响到外面的元素
        计算BFC的高度时，浮动元素也参与计算
      应用：
        防止margin重叠，外边距折叠（Margin collapsing）也只会发生在属于同一BFC的块级元素之间　　　
@@ -120,7 +134,7 @@ position布局：
 grid布局：
   是CSS中最强大的布局系统。 这是一个二维系统，这意味着它可以同时处理列和行，不像 flexbox 那样主要是一维系统。
 你可以通过将CSS规则应用于父元素和该元素的子元素，来使用网格布局。
-https://segmentfault.com/a/1190000012889793
+http://www.ruanyifeng.com/blog/2019/03/grid-layout-tutorial.html
   1.“fr”单位允许您将轨道大小设置为网格容器自由空间的一部分。自由空间是在排除所有不可伸缩的 grid item 之后计算得到的。
   父元素：
     justify-items沿着行轴对齐网格内的内容（与之对应的是 align-items, 即沿着列轴对齐）。
@@ -131,39 +145,188 @@ https://segmentfault.com/a/1190000012889793
     justify-self沿着行轴对齐grid item 里的内容（与之对应的是 align-self, 即沿列轴对齐）
   而该属性则用于控制自动布局算法的工作方式。
 */
-.grid-wrapper {
-    width: 100%;
-    height: 300px;
-    display: grid;
-    grid-template-columns: 100px 100px 100px 100px;
-    grid-template-rows: auto;
-    grid-template-areas:
-            "header header header header"
-            "main main . sidebar"
-            "footer footer footer footer";
-    justify-items: center;
-    align-items:end;
-    justify-content: end;
-}
-.item{
-    width: 50px;
-    height: 50px;
-    background: pink;
+
+html, body {
+    height: 100%;
+    margin: 0px;
 }
 
-.item-a {
-    grid-area: header;
+/*
+品字布局
+.container {
+    height: 100%;
+}
+
+.top, .bottom {
+    height: 50%;
+}
+
+.top {
     background: red;
 }
-.item-b {
-    grid-area: main;
-    background: yellow;
+
+.bottom {
+    display: flex;
 }
-.item-c {
-    grid-area: sidebar;
-    background: gray;
+
+.bottom > div {
+    flex-grow: 1;
 }
-.item-d {
-    grid-area: footer;
+
+.left {
     background: green;
 }
+
+.right {
+    background: blue;
+}*/
+
+
+/*sticky定位
+设定的阈值是 top:0 ，这个值表示当元素距离页面视口（Viewport，也就是fixed定位的参照）顶部距离大于 0px 时，元素以 relative 定位表现，
+而当元素距离页面视口小于 0px 时，元素表现为 fixed 定位，也就会固定在顶部。
+
+.container{
+    background: red;
+    height: 100px;
+    overflow: auto;
+}
+nav{
+    position: sticky;
+    top: 0px;
+    height: 50px;
+    background: yellow;
+}
+.sticky{
+    height: 50px;
+    background: blue;
+    margin-bottom: 10px;
+}
+*/
+
+/*
+网格布局
+*/
+.container{
+    display: grid;
+    /*display:inline-grid;*/
+    height: 100%;
+    grid-template-rows: 100px 100px 100px 100px;
+    grid-template-columns: 100px 100px 100px;
+    /*grid-template-rows: repeat(3,33.3%);
+    grid-template-columns: repeat(3,33.3%);*/
+    /*grid-template-rows: repeat(auto-fill,100px);
+    grid-template-columns: repeat(auto-fill,200px);*/
+    /*grid-template-rows: 1fr 2fr;
+    grid-template-columns: 2fr 1fr;*/
+    grid-template-areas: 'a a a' 'b c c' 'b c c' 'd d d';
+    /*grid-row-gap:10px;
+    grid-column-gap:10px;*/
+    grid-auto-flow:row;
+    /*单元格内容的水平(垂直)位置*/
+    /*justify-items: center;
+    align-items: center;*/
+    /*整个内容区域在容器里面的水平(垂直)位置*/
+    /*justify-content: center;
+    align-content: center;*/
+}
+.container div:nth-of-type(3n){
+    background: green;
+}
+.container div:nth-of-type(3n+1){
+    background: red;
+}
+.container div:nth-of-type(3n+2){
+    background: yellow;
+}
+
+.header{
+    /*grid-column-start: 1;
+    grid-column-end: 4;*/
+    grid-area:a;
+    /*单元格内容的水平(垂直)位置[和justify-items,align-items一样]*/
+   /* justify-self: center;
+    align-self: center;*/
+}
+.left{
+    /*grid-row-start: 2;
+    grid-row-end: 4;*/
+    grid-area: b;
+}
+.main{
+   /* grid-column-start: 2;
+    grid-column-end: 4;
+    grid-row-start: 2;
+    grid-row-end: 4;*/
+    /*
+     grid-column: 2 / 4;
+     grid-row: 2 / 4;
+    */
+    grid-area: c;
+}
+.footer{
+    /*grid-column-start: 1;
+    grid-column-end: 4;*/
+    grid-area: d;
+}
+
+
+/*
+旋转立方体
+*/
+@keyframes spin {
+    from {
+        transform: rotateX(0deg)  rotateY(0deg);
+    }
+    to {
+        transform: rotateX(360deg)  rotateY(360deg);
+    }
+}
+
+.content{
+    perspective: 1000px;
+    perspective-origin: 50% 50%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.cube{
+    position: relative;
+    height: 400px;
+    width: 400px;
+    transform-style: preserve-3d;
+    animation: spin 5s infinite linear;
+}
+.cube> div{
+    width: 200px;
+    height: 200px;
+    position: absolute;
+}
+.front{
+    background: red;
+    transform: translateZ(100px);
+}
+.back{
+    background: green;
+    transform: translateZ(-100px) rotateY(180deg);
+}
+.left{
+    background: yellow;
+    transform: rotateY(-90deg) translateZ(100px);
+}
+.right{
+    background: lightgray;
+    transform: rotateY(90deg) translateZ(100px);
+}
+.top{
+    background: blue;
+    transform: rotateX(90deg) translateZ(100px);
+}
+.bottom{
+    background: pink;
+    transform: rotateX(-90deg) translateZ(100px);
+}
+
+
+

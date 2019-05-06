@@ -112,6 +112,7 @@ const remove = function (key) {
 // console.log('now', get('aaa'));
 
 //indexDb
+//注意：创建object store对象只能从onupgradeneeded版本变化回调中进行。
 var my = {
     name: 'juejin',
     version: '1',
@@ -156,7 +157,7 @@ request.onsuccess = function (event) {//成功回调
         }
     };
     eachData.onerror = function (event) {
-        consoe.error('each all data fail reason:' + event.target.result);
+        console.error('each all data fail reason:' + event.target.result);
     };
 };
 request.onerror = function () {//失败回调
